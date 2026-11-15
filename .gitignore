@@ -1,0 +1,21 @@
+# Runtime data
+**/cache/**
+**/assets/cache/**
+
+# Local credentials and deployment artifacts
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.zip
+.DS_Store
+**/._*
+
+# Local logs and backups
+*.log
+*.bak
+*.bak-*
+*.backup-*
+*.rollback-*

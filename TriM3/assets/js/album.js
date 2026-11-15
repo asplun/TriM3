@@ -1,0 +1,76 @@
+/* TriM3 相册前台交互：布局切换 / 排序 / 灯箱 */
+(function () {
+  'use strict';
+  var layouts = ['grid', 'masonry', 'mosaic', 'list', 'slide'];
+
+  function isLayout(value) {
+    return layouts.indexOf(value) > -1;
+  }
+
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+
+  /* ---------- 布局切换 + 排序（事件委托，Swup 后自动生效） ---------- */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.seg-btn') : null;
+    if (!btn) { return; }
+    var seg = btn.closest('.seg');
+    var mosaic = document.querySelector('.album-mosaic');
+    if (!seg || !mosaic) { return; }
+    seg.querySelectorAll('.seg-btn').forEach(function (b) { b.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+
+    if (btn.hasAttribute('data-layout')) {
+      var layout = btn.getAttribute('data-layout');
+      var defaultLayout = mosaic.getAttribute('data-default-layout') || mosaic.getAttribute('data-layout') || 'grid';
+      mosaic.classList.remove('is-grid', 'is-masonry', 'is-mosaic', 'is-list', 'is-slide');
+      mosaic.classList.add('is-' + layout);
+      mosaic.setAttribute('data-layout', layout);
+
+      try {
+        localStorage.setItem('tri3-album-layout', layout);
+        localStorage.setItem('tri3-album-layout-base', defaultLayout);
+      } catch (err) {}
+    }
+
+    if (btn.hasAttribute('data-sort')) {
+      sortPhotos(mosaic, btn.getAttribute('data-sort'));
+    }
+  });
+
+  function sortPhotos(mosaic, mode) {
+    var figures = Array.prototype.slice.call(mosaic.querySelectorAll('.album-photo'));
+    if (!figures.length) { return; }
+    figures.sort(function (a, b) {
+      if (mode === 'old') { return (parseInt(a.getAttribute('data-created'), 10) || 0) - (parseInt(b.getAttribute('data-created'), 10) || 0); }
+      if (mode === 'title') {
+        return String(a.getAttribute('data-title') || '').localeCompare(String(b.getAttribute('data-title') || ''), 'zh');
+      }
+      return (parseInt(b.getAttribute('data-created'), 10) || 0) - (parseInt(a.getAttribute('data-created'), 10) || 0);
+    });
+    figures.forEach(function (f) { mosaic.appendChild(f); });
+  }
+
+  /* ---------- 恢复上次布局偏好 ---------- */
+  ready(function () {
+    var mosaic = document.querySelector('.album-mosaic');
+    if (!mosaic) { return; }
+    try {
+      var defaultLayout = mosaic.getAttribute('data-default-layout') || 'grid';
+      var savedBase = localStorage.getItem('tri3-album-layout-base');
+      var saved = localStorage.getItem('tri3-album-layout');
+      if (savedBase === defaultLayout && isLayout(saved)) {
+        mosaic.classList.remove('is-grid', 'is-masonry', 'is-mosaic', 'is-list', 'is-slide');
+        mosaic.classList.add('is-' + saved);
+        mosaic.setAttribute('data-layout', saved);
+
+        var segBtns = document.querySelectorAll('.album-toolbar .seg-btn[data-layout]');
+        segBtns.forEach(function (b) {
+          b.classList.toggle('is-active', b.getAttribute('data-layout') === saved);
+        });
+      }
+    } catch (err) {}
+  });
+})();

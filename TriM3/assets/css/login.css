@@ -1,0 +1,611 @@
+/* ===== TriM3 前台登录：banner 入口 + MD3 弹窗 ===== */
+
+/* --- banner 右上角登录/用户按钮 --- */
+.tri-login-corner {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-slider .tri-login-corner .icon-btn {
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.tri-login-entry {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.tri-login-entry:hover {
+  transform: scale(1.06);
+  background: #fff;
+}
+.tri-login-entry .tri-login-avatar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+}
+/* 发布说说按钮：与登录头像同尺寸（32px），保持视觉协调 */
+.tri-login-corner .tri-say-entry {
+  width: 32px;
+  height: 32px;
+  font-size: 17px;
+}
+
+/* --- banner 左上角搜索（点击向右平滑延伸，按钮与输入框一体胶囊，同材质深色玻璃） --- */
+.tri-search-corner {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+.tri-search-entry {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-size: 17px;
+  transition: background-color 0.2s ease, border-radius 0.32s cubic-bezier(0.2, 0, 0, 1), transform 0.2s ease;
+}
+.tri-search-entry:hover {
+  background: rgba(0, 0, 0, 0.42);
+  transform: scale(1.05);
+}
+/* 展开后按钮左侧圆角、右侧直角，与输入框连成整体胶囊 */
+.tri-search-corner.is-open .tri-search-entry {
+  border-radius: 999px 0 0 999px;
+}
+.tri-search-expand {
+  display: flex;
+  align-items: center;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 0 999px 999px 0;
+  transition: max-width 0.32s cubic-bezier(0.2, 0, 0, 1), opacity 0.24s ease;
+}
+.tri-search-expand input {
+  flex: 1;
+  min-width: 0;
+  width: 180px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 16px 0 2px;
+  caret-color: rgba(255, 255, 255, 0.9);
+}
+.tri-search-expand input::placeholder {
+  color: rgba(255, 255, 255, 0.68);
+}
+.tri-search-corner.is-open .tri-search-expand {
+  max-width: 220px;
+  opacity: 1;
+}
+
+/* --- MD3 Dialog --- */
+.tri-dialog-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  animation: tri-mask-in 0.18s ease;
+}
+.tri-dialog-mask[hidden] {
+  display: none;
+}
+.tri-dialog {
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  background: var(--md-sys-color-surface-container-high, #ece6f0);
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  border-radius: 28px;
+  padding: 24px 24px 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+  animation: tri-dialog-in 0.2s ease;
+}
+.tri-dialog h3 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+}
+.tri-dialog .tri-login-sub {
+  margin: -8px 0 16px;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+/* 输入框（MD3 outlined 风格） */
+.tri-field {
+  position: relative;
+  margin-bottom: 14px;
+}
+.tri-field input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  background: transparent;
+  border-radius: 8px 8px 8px 8px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.tri-field input:focus {
+  padding: 0 13px;
+
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary, #6750a4);
+}
+.tri-field label {
+  position: absolute;
+  left: 12px;
+  top: -7px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--md-sys-color-primary, #6750a4);
+  background: var(--md-sys-color-surface-container-high, #ece6f0);
+  pointer-events: none;
+}
+
+/* 记住我 + 错误提示 */
+.tri-login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2px 0 12px;
+}
+.tri-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  cursor: pointer;
+}
+.tri-check input {
+  accent-color: var(--md-sys-color-primary, #6750a4);
+}
+.tri-login-error {
+  min-height: 18px;
+  font-size: 12.5px;
+  color: var(--md-sys-color-error, #b3261e);
+  margin: 0 0 8px;
+}
+
+/* 按钮 */
+.tri-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+.tri-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 9px 22px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.15s ease, background 0.15s ease;
+}
+.tri-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.tri-btn-text {
+  background: transparent;
+  color: var(--md-sys-color-primary, #6750a4);
+}
+.tri-btn-text:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary, #6750a4) 10%, transparent);
+}
+.tri-btn-filled {
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #fff);
+}
+.tri-btn-filled:hover {
+  filter: brightness(1.06);
+}
+
+/* ===== 说说发布弹窗（MD3 Dialog） ===== */
+.tri-say-dialog {
+  width: 580px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding: 22px 24px 18px;
+  background: var(--md-sys-color-surface-container-high, #ece6f0);
+  border-radius: 28px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+}
+.tri-say-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.tri-say-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--md-sys-color-surface-container-highest, #e6e0e9);
+}
+.tri-say-av-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-primary, #6750a4);
+  font-size: 20px;
+}
+.tri-say-head-txt {
+  flex: 1;
+  min-width: 0;
+}
+.tri-say-head h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+}
+.tri-say-sub {
+  font-size: 12.5px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+.tri-say-close {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-size: 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.tri-say-close:hover {
+  background: var(--md-sys-color-surface-container-highest, #e6e0e9);
+}
+.tri-say-body {
+  position: relative;
+}
+.tri-say-ta {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 104px;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 1.65;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  border: none;
+  border-radius: 16px 16px 8px 16px;
+  outline: none;
+  resize: vertical;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+}
+.tri-say-ta:focus {
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary, #6750a4);
+}
+.tri-say-ta::placeholder {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  opacity: 0.7;
+}
+.tri-say-ta:focus {
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary, #6750a4);
+}
+.tri-say-counter {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font-size: 11px;
+  color: var(--md-sys-color-outline, #79747e);
+  pointer-events: none;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  padding: 0 4px;
+  border-radius: 6px;
+}
+.tri-say-imgs {
+  margin-top: 12px;
+}
+.tri-say-imgs-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+.tri-say-imgs-label:hover {
+  background: var(--md-sys-color-surface-container-highest, #e6e0e9);
+}
+.tri-say-imgs-label i {
+  font-size: 17px;
+  color: var(--md-sys-color-primary, #6750a4);
+}
+.tri-say-imgs-label.is-active {
+  color: var(--md-sys-color-primary, #6750a4);
+  background: color-mix(in srgb, var(--md-sys-color-primary, #6750a4) 10%, transparent);
+}
+.tri-say-imgs-box {
+  margin-top: 8px;
+}
+.tri-say-ta-sm {
+  min-height: 56px;
+  font-size: 13.5px;
+  border-radius: 14px;
+}
+.tri-say-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.tri-say-foot .tri-dialog-actions {
+  margin-top: 0;
+}
+
+/* 已登录用户菜单 */
+.tri-user-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.tri-user-head img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--md-sys-color-surface-container-highest, #e6e0e9);
+}
+.tri-user-head .tri-user-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+}
+.tri-user-head .tri-user-meta {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+.tri-user-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tri-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  font-size: 14.5px;
+  font-family: inherit;
+  text-align: left;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.tri-menu-item:hover {
+  background: var(--md-sys-color-surface-container-high, #e6e0e9);
+}
+.tri-menu-item i {
+  font-size: 20px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  width: 22px;
+  text-align: center;
+}
+.tri-menu-item.is-danger {
+  color: var(--md-sys-color-error, #b3261e);
+}
+.tri-menu-item.is-danger i {
+  color: var(--md-sys-color-error, #b3261e);
+}
+
+/* --- 已登录：头像旁右键菜单式小弹窗 --- */
+.tri-login-menu {
+  position: fixed;
+  z-index: 2100;
+  width: 224px;
+  max-width: calc(100vw - 16px);
+  box-sizing: border-box;
+  background: var(--md-sys-color-surface-container, #f3edf7);
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  transform: scale(0.95) translateY(-4px);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.tri-login-menu.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.tri-menu-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 6px;
+}
+.tri-menu-head img,
+.tri-menu-av-fallback {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-sys-color-primary-container, #eaddff);
+  color: var(--md-sys-color-on-primary-container, #21005d);
+  font-size: 15px;
+  font-weight: 500;
+}
+.tri-menu-username {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tri-menu-sep {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--md-sys-color-outline-variant, #cac4d0);
+}
+.tri-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface, #1d1b20);
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.tri-menu-item:hover {
+  background: var(--md-sys-color-surface-container-high, #ece6f0);
+}
+.tri-menu-item i {
+  font-size: 18px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  width: 20px;
+  text-align: center;
+}
+.tri-menu-item.is-danger {
+  color: var(--md-sys-color-error, #b3261e);
+}
+.tri-menu-item.is-danger i {
+  color: var(--md-sys-color-error, #b3261e);
+}
+.tri-menu-item:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+@keyframes tri-mask-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes tri-dialog-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+
+/* ===== 移动端适配：banner 角按钮触控目标放大（MD3 触控 ≥44px 折中 38px） ===== */
+@media (max-width: 768px) {
+  .tri-login-corner {
+    top: 12px;
+    right: 14px;
+    gap: 8px;
+  }
+  .tri-search-corner {
+    top: 12px;
+    left: 14px;
+  }
+  .tri-login-entry,
+  .tri-login-corner .tri-say-entry {
+    width: 38px;
+    height: 38px;
+    font-size: 19px;
+  }
+  .tri-search-entry {
+    width: 38px;
+    height: 38px;
+    font-size: 19px;
+  }
+  .tri-search-corner.is-open .tri-search-input {
+    height: 38px;
+    font-size: 14px;
+    padding-left: 44px;
+    padding-right: 14px;
+  }
+  /* 已登录头像菜单弹窗：移动端贴近触发点，宽度自适应 */
+  .tri-login-menu {
+    width: 220px;
+  }
+  /* 登录/发布弹窗移动端：内边距收紧、圆角略收 */
+  .tri-dialog {
+    width: auto;
+    padding: 20px 20px 16px;
+    border-radius: 24px;
+  }
+  .tri-dialog h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .tri-dialog .tri-login-sub {
+    margin: -6px 0 14px;
+  }
+}

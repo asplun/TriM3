@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>相册管理 · TriM3</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+<style>
+:root{
+  --primary:#3D5AFE; --primary-container:#E0E4FF; --on-primary-container:#1B2A78;
+  --on-primary:#fff; --bg:#F4F5FA; --surface:#fff; --surface-2:#F7F8FC;
+  --text:#1B1C1E; --text-2:#5B5D64; --text-3:#93959E;
+  --line:rgba(27,28,30,.08); --line-2:rgba(27,28,30,.14);
+  --danger:#E5484D; --warn:#F5A524;
+  --radius:16px; --radius-s:10px; --radius-xs:8px;
+  --shadow-1:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+  --shadow-2:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(27,28,30,.14);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(27,28,30,.25)}
+::-webkit-scrollbar-track{background:transparent}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:232px;flex:none;background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.side-logo{display:flex;align-items:center;gap:11px;padding:4px 8px 18px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.side-logo .logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#3D5AFE,#6C7CFC);display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px;flex:none;box-shadow:0 4px 12px rgba(61,90,254,.28)}
+.side-logo b{font-size:15px;display:block;line-height:1.25}
+.side-logo span{font-size:11px;color:var(--text-3)}
+.side-nav{display:flex;flex-direction:column;gap:3px}
+.side-nav button,.side-nav a{display:flex;align-items:center;gap:11px;padding:10px 13px;border:0;background:transparent;border-radius:12px;font-size:14px;color:var(--text-2);cursor:pointer;text-align:left;font-family:inherit;text-decoration:none;width:100%;transition:background .15s,color .15s}
+.side-nav button:hover,.side-nav a:hover{background:var(--primary-container);color:var(--on-primary-container)}
+.side-nav button.active{background:var(--primary-container);color:var(--on-primary-container);font-weight:600}
+.side-nav button i,.side-nav a i{font-size:18px;width:20px}
+.side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+.side-foot a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-s,10px);color:var(--text-2);text-decoration:none;font-size:13px;transition:background .15s,color .15s}
+.side-foot a:hover{background:var(--primary-container);color:var(--on-primary-container)}
+.main{flex:1;padding:28px 34px;min-width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.topbar h1{font-size:21px;font-weight:700;display:flex;align-items:center;gap:12px;letter-spacing:.2px}
+.topbar h1 .back{width:36px;height:36px;border:1px solid var(--line);background:var(--surface);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2);font-size:17px;transition:.15s}
+.topbar h1 .back:hover{background:var(--primary-container);color:var(--on-primary-container);border-color:transparent}
+.topbar h1 .sub{font-size:12px;font-weight:400;color:var(--text-3);margin-left:2px}
+.topbar .count{font-size:12px;font-weight:500;color:var(--text-2);background:var(--surface-2);border:1px solid var(--line);padding:2px 11px;border-radius:999px}
+.topbar .count .ri-cloud-line{color:var(--primary)}
+.topbar .count .ri-hard-drive-2-line{color:var(--text-3)}
+.topbar .storage-badge{font-size:12px;font-weight:600;color:var(--on-primary-container);background:var(--primary-container);border:1px solid transparent;padding:2px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;margin-left:8px}
+.topbar .storage-badge i{font-size:13px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;background:var(--primary);color:var(--on-primary);text-decoration:none;box-shadow:0 2px 8px rgba(61,90,254,.25)}
+.btn:hover{filter:brightness(1.07);box-shadow:0 4px 14px rgba(61,90,254,.32)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--primary);border:1px solid var(--primary);box-shadow:none}
+.btn-plain{background:var(--surface);color:var(--text-2);border:1px solid var(--line);box-shadow:var(--shadow-1)}
+.btn-plain:hover{color:var(--on-primary-container);background:var(--primary-container);border-color:transparent;box-shadow:none}
+.btn-danger{background:rgba(229,72,77,.08);color:var(--danger);border:1px solid rgba(229,72,77,.22);box-shadow:none}
+.btn-danger:hover{background:rgba(229,72,77,.14)}
+.btn-sm{padding:6px 13px;font-size:12px;border-radius:999px;box-shadow:none}
+.icon-btn{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--text-2);cursor:pointer;transition:.15s;font-family:inherit}
+.icon-btn:hover{background:var(--primary-container);color:var(--on-primary-container);border-color:transparent}
+.icon-btn.danger:hover{background:rgba(229,72,77,.1);color:var(--danger);border-color:transparent}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-1)}
+.albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.album-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-1);overflow:hidden;transition:.2s}
+.album-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--line-2)}
+.album-cover{height:132px;background:linear-gradient(135deg,#EEF1F9,#E4E8F4);display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:36px;position:relative;overflow:hidden}
+.album-card{position:relative}
+.photo-card{position:relative}
+.batch-chk{position:absolute;left:9px;top:9px;z-index:6;width:24px;height:24px;border-radius:8px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.16);cursor:pointer;transition:.15s}
+.batch-chk:hover{background:#fff}
+.batch-chk input{width:15px;height:15px;margin:0;accent-color:var(--primary);cursor:pointer}
+.batch-chk.checked{background:var(--primary)}
+.batch-chk.checked input{accent-color:#fff}
+.batch-top-btn{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;background:var(--surface);color:var(--text-2);border:1px solid var(--line);box-shadow:var(--shadow-1)}
+.batch-top-btn:hover{color:var(--on-primary-container);background:var(--primary-container);border-color:transparent}
+.batch-top-btn.active{background:var(--primary);color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(61,90,254,.25)}
+.batch-top-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.batch-top-btn.danger{background:rgba(229,72,77,.08);color:var(--danger);border:1px solid rgba(229,72,77,.22)}
+.batch-top-btn.danger:not(:disabled):hover{background:rgba(229,72,77,.14)}
+.batch-top-btn.danger.active{background:var(--danger);color:#fff;border-color:transparent}
+.album-cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .35s}
+.album-card:hover .album-cover img{transform:scale(1.05)}
+.album-cover .empty-ic{position:relative;opacity:.7}
+.album-cnt{position:absolute;right:10px;top:10px;background:rgba(20,22,30,.55);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;display:flex;align-items:center;gap:4px}
+.album-mask{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,17,25,.55),rgba(15,17,25,.08) 55%,transparent);opacity:0;transition:.2s;display:flex;align-items:flex-end;padding:12px}
+.album-card:hover .album-mask{opacity:1}
+.album-mask .btn{background:rgba(255,255,255,.92);color:#1B1C1E;box-shadow:0 4px 14px rgba(0,0,0,.18);padding:7px 14px;font-size:12px}
+.album-mask .btn:hover{background:#fff;filter:none}
+.album-body{padding:14px 16px 13px}
+.album-body h3{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.album-body h3 .cnt{font-size:11px;font-weight:500;color:var(--text-3);background:var(--surface-2);border-radius:999px;padding:1px 8px}
+.album-desc{font-size:12px;color:var(--text-2);margin-top:5px;min-height:19px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.album-ops{display:flex;gap:6px;margin-top:13px;align-items:center}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
+.photo-card{background:var(--surface);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:var(--shadow-1);cursor:grab;transition:transform .12s,opacity .12s,box-shadow .15s,border-color .15s}
+.photo-card:hover{box-shadow:var(--shadow-2);border-color:var(--line-2)}
+.photo-card.dragging{opacity:.5;transform:scale(.95);cursor:grabbing;box-shadow:var(--shadow-2)}
+.photo-card.drag-over{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-container)}
+.photo-img{height:122px;background:linear-gradient(135deg,#EEF1F9,#E4E8F4);position:relative;overflow:hidden}
+.photo-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.photo-card:hover .photo-img img{transform:scale(1.06)}
+.photo-mask{position:absolute;inset:0;background:rgba(15,17,25,.42);opacity:0;transition:.18s;display:flex;align-items:center;justify-content:center;gap:7px}
+.photo-card:hover .photo-mask{opacity:1}
+.photo-mask .icon-btn{background:rgba(255,255,255,.94);border:none;color:#1B1C1E;width:30px;height:30px;border-radius:9px;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.photo-mask .icon-btn:hover{background:#fff;color:var(--primary)}
+.photo-mask .icon-btn.danger:hover{background:#fff;color:var(--danger)}
+.photo-mask .icon-btn.drag-hint{cursor:grab}
+.cover-tag{position:absolute;left:8px;top:8px;background:rgba(20,22,30,.55);backdrop-filter:blur(6px);color:#fff;font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;display:flex;align-items:center;gap:3px;pointer-events:none}
+.photo-body{padding:9px 12px;border-top:1px solid var(--line)}
+.p-title{font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.modal-mask{position:fixed;inset:0;background:rgba(15,17,22,.45);display:none;align-items:center;justify-content:center;z-index:99;backdrop-filter:blur(3px)}
+.modal-mask.show{display:flex}
+.modal{background:var(--surface);border-radius:18px;width:440px;max-width:92vw;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.18);animation:pop .18s ease}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-size:16px;margin-bottom:18px;display:flex;align-items:center;gap:9px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:7px}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line-2);border-radius:11px;padding:10px 13px;font-size:13px;font-family:inherit;outline:none;background:var(--surface-2);color:var(--text);resize:vertical;transition:.15s}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-container)}
+.radio-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);border-radius:999px;padding:7px 15px;cursor:pointer;font-size:13px;color:var(--text-2);background:var(--surface-2);transition:.15s;user-select:none}
+.radio-chip:hover{border-color:var(--primary)}
+.radio-chip input{display:none}
+.radio-chip:has(input:checked){border-color:var(--primary);background:var(--primary-container);color:var(--on-primary-container);font-weight:600}
+.modal-foot{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
+.toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(90px);background:#1B1C1E;color:#fff;padding:11px 22px;border-radius:999px;font-size:13px;opacity:0;transition:.28s;z-index:999;pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.22)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:70px 20px;color:var(--text-3)}
+.empty i{font-size:46px;display:block;margin-bottom:12px;opacity:.6}
+.empty p{font-size:13px}
+.empty .btn{margin-top:16px}
+.drop-zone{border:2px dashed var(--line-2);border-radius:var(--radius);padding:30px;text-align:center;color:var(--text-3);cursor:pointer;margin-bottom:20px;background:var(--surface);transition:.18s}
+.drop-zone:hover,.drop-zone.over{border-color:var(--primary);color:var(--primary);background:var(--primary-container)}
+.drop-zone i{font-size:28px;display:block;margin-bottom:7px}
+.drop-zone small{display:block;font-size:11px;margin-top:5px;opacity:.7}
+.upload-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.loading{text-align:center;padding:46px;color:var(--text-3)}
+.loading i{font-size:30px;display:block;margin-bottom:10px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+<link rel="stylesheet" href="../assets/css/lightgallery-v3.min.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-logo">
+      <div class="logo"><i class="ri-gallery-fill"></i></div>
+      <div><b>TriM3 相册</b><span>独立管理后台</span></div>
+    </div>
+    <nav class="side-nav">
+      <button class="active" onclick="goList()"><i class="ri-gallery-line"></i>相册列表</button>
+      <button onclick="goSettings()"><i class="ri-settings-3-line"></i>相册页设置</button>
+      <a href="/admin/options-theme.php?theme=TriM3#album" title="返回主题设置"><i class="ri-settings-4-line"></i>主题设置</a>
+    </nav>
+    <div class="side-foot">
+      <a id="front-link" href="#" target="_blank" rel="noopener"><i class="ri-external-link-line"></i>查看前台相册页</a>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <h1 id="page-title"><i class="ri-gallery-line"></i>相册管理 <span class="count" id="count-badge">0</span><span class="storage-badge" id="storage-badge"><i class="ri-hard-drive-2-line"></i>本机存储</span></h1>
+      <div id="top-actions">
+        <button class="btn" id="btn-new" onclick="openAlbumModal(0)"><i class="ri-add-line"></i>新建相册</button>
+      </div>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<div class="modal-mask" id="modal-mask" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title"><i class="ri-edit-2-line"></i>编辑相册</h3>
+    <div class="field"><label>相册名称 *</label><input id="f-name" placeholder="例如：旅行日记"></div>
+    <div class="field"><label>相册描述</label><textarea id="f-desc" rows="2" placeholder="简单介绍这个相册"></textarea></div>
+    <div class="field" id="f-cover-field" style="display:none"><label>封面地址</label><input id="f-cover" placeholder="留空则使用第一张图"></div>
+    <div class="modal-foot">
+      <button class="btn btn-plain" onclick="closeModal()">取消</button>
+      <button class="btn" id="modal-ok" onclick="saveAlbum()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="file-input" accept="image/*" multiple style="display:none">
+
+<script src="../assets/js/tri-msg.js?v=1.2.5"></script>
+<script>
+var API = '../api/album-api.php';
+var SITE_ROOT = (function(){
+  var p = location.pathname;
+  var i = p.indexOf('/usr/themes/TriM3/admin/');
+  return i >= 0 ? p.slice(0, i) : '';
+})();
+var curAid = 0;
+var editingAid = 0;
+var STORAGE = {storage:'local', label:'本机存储', type:'', url:''};
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function toast(msg){/* 统一消息中心 */ if(window.TriMsg){window.TriMsg.show(msg);return;} var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show')},2600)}
+/* ================= 存储方式（本地 / 图床） ================= */
+function loadStorage(){
+  api(qs({do:'storage'})).then(function(r){
+    if(r && r.ok){
+      STORAGE = {storage:r.storage||'local', label:r.label||'本机存储', type:r.type||'', url:r.url||''};
+    }
+    renderStorageBadge();
+  }).catch(function(){renderStorageBadge()});
+}
+function renderStorageBadge(){
+  var b = document.getElementById('storage-badge');
+  if(!b){
+    /* goList/openDetail 重写标题后徽标丢失，自动重建到计数徽标之后 */
+    var cb = document.getElementById('count-badge');
+    var h1 = document.getElementById('page-title');
+    if(cb && h1 && cb.parentNode === h1){
+      b = document.createElement('span');
+      b.className = 'storage-badge';
+      b.id = 'storage-badge';
+      h1.insertBefore(b, cb.nextSibling);
+    }
+  }
+  if(b){
+    var icon = STORAGE.storage==='local' ? 'ri-hard-drive-2-line' : 'ri-cloud-line';
+    b.innerHTML = '<i class="'+icon+'"></i>' + esc(STORAGE.label);
+  }
+  /* 统一更新所有「上传图片」按钮文案 */
+  var ups = document.querySelectorAll('#top-actions .btn[onclick="pickFiles()"], .empty .btn[onclick="pickFiles()"]');
+  var label = STORAGE.storage==='local' ? '上传图片' : '上传到图床';
+  Array.prototype.forEach.call(ups, function(up){
+    up.innerHTML = '<i class="ri-upload-2-line"></i>' + label;
+  });
+  /* 拖拽区文案与提示 */
+  var dz = document.getElementById('drop-zone');
+  if(dz){
+    var main = STORAGE.storage==='local' ? '点击选择图片上传' : '点击选择图片（将上传至' + esc(STORAGE.label) + '）';
+    var sub = STORAGE.storage==='local'
+      ? '支持多选 · jpg/png/gif/webp · 单张不超过 20MB'
+      : '支持多选 · 上传至 ' + esc(STORAGE.label) + ' · 单张不超过 20MB';
+    dz.innerHTML = '<i class="ri-upload-cloud-2-line"></i>' + main + '<small>' + sub + '</small>';
+  }
+}
+function api(params, formData){
+  var opts = formData ? {method:'POST', body:formData, credentials:'same-origin'}
+    : {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:params, credentials:'same-origin'};
+  return fetch(API, opts).then(function(r){return r.text()}).then(function(t){
+    try{return JSON.parse(t)}catch(e){throw new Error('响应异常')}
+  });
+}
+function qs(obj){return Object.keys(obj).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(obj[k]==null?'':obj[k])}).join('&')}
+
+/* ================= 相册列表 ================= */
+function goList(){
+  curAid = 0;
+  document.getElementById('page-title').innerHTML = '<i class="ri-gallery-line"></i>相册管理 <span class="count" id="count-badge">0</span>';
+  document.getElementById('top-actions').innerHTML = '<button class="btn" id="btn-new" onclick="openAlbumModal(0)"><i class="ri-add-line"></i>新建相册</button>';
+  renderBatchTop('album');
+  document.querySelectorAll('.side-nav button').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.side-nav button')[0].classList.add('active');
+  var v = document.getElementById('view');
+  v.innerHTML = '<div class="loading"><i class="ri-loader-4-line"></i>加载中…</div>';
+  api(qs({do:'album_list'})).then(function(r){
+    if(!r.ok){toast(r.msg||'加载失败');v.innerHTML='';return}
+    var list = r.list||[];
+    var cb = document.getElementById('count-badge');
+    if(cb) cb.textContent = list.length;
+    if(!list.length){v.innerHTML='<div class="panel empty"><i class="ri-gallery-line"></i><p>还没有相册，点击右上角「新建相册」开始</p></div>';return}
+    v.innerHTML = '<div class="albums">' + list.map(function(a){
+      var cover = a.cover ? '<img src="'+esc(a.cover)+'" alt="">' : '<i class="ri-image-line empty-ic"></i>';
+      return '<div class="album-card"><label class="batch-chk" title="选择"><input type="checkbox" class="bchk-album" value="'+a.aid+'" onchange="refreshBatch(\'album\')"></label><div class="album-cover">'+cover+
+        '<span class="album-cnt"><i class="ri-image-2-line"></i>'+a.count+'</span>'+
+        '<div class="album-mask"><button class="btn" onclick="openDetail('+a.aid+')"><i class="ri-image-2-line"></i>管理图片</button></div>'+
+        '</div>'+
+        '<div class="album-body"><h3>'+esc(a.name)+' <span class="cnt">'+a.count+' 张</span></h3>'+
+        '<div class="album-desc">'+esc(a.description||'')+'</div>'+
+        '<div class="album-ops">'+
+        '<button class="icon-btn" title="编辑" onclick="openAlbumModal('+a.aid+')"><i class="ri-edit-line"></i></button>'+
+        '<button class="icon-btn" title="上移" onclick="moveAlbum('+a.aid+',-1)"><i class="ri-arrow-up-line"></i></button>'+
+        '<button class="icon-btn" title="下移" onclick="moveAlbum('+a.aid+',1)"><i class="ri-arrow-down-line"></i></button>'+
+        '<button class="icon-btn danger" title="删除" onclick="delAlbum('+a.aid+')"><i class="ri-delete-bin-line"></i></button>'+
+        '</div></div></div>';
+    }).join('') + '</div>';
+    refreshBatch('album');
+  }).catch(function(e){toast('加载失败');v.innerHTML=''});
+}
+
+/* ================= 相册详情（图片管理） ================= */
+function openDetail(aid){
+  curAid = aid;
+  var a = null;
+  api(qs({do:'album_list'})).then(function(r){
+    (r.list||[]).forEach(function(x){if(x.aid==aid)a=x});
+    document.getElementById('page-title').innerHTML = '<button class="back" onclick="goList()"><i class="ri-arrow-left-line"></i></button>' + esc(a?a.name:'相册') + ' <span class="count" id="count-badge">0</span><span class="storage-badge" id="storage-badge"><i class="ri-hard-drive-2-line"></i>本机存储</span>';
+    document.getElementById('top-actions').innerHTML = '<button class="btn btn-plain" onclick="goList()"><i class="ri-arrow-left-line"></i>返回</button> <button class="btn btn-plain" onclick="openLinkModal()"><i class="ri-link"></i>外链添加</button> <button class="btn" onclick="pickFiles()"><i class="ri-upload-2-line"></i>上传图片</button>';
+    renderBatchTop('photo');
+    document.querySelectorAll('.side-nav button').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.side-nav button')[0].classList.add('active');
+    renderStorageBadge();
+    renderPhotos(aid);
+  });
+}
+function renderPhotos(aid){
+  var v = document.getElementById('view');
+  v.innerHTML = '<div class="loading"><i class="ri-loader-4-line"></i>加载中…</div>';
+  api(qs({do:'photo_list', aid:aid})).then(function(r){
+    if(!r.ok){toast(r.msg||'加载失败');v.innerHTML='';return}
+    var list = r.list||[];
+    var cb = document.getElementById('count-badge');
+    if(cb) cb.textContent = list.length;
+    if(!list.length){
+      v.innerHTML = '<div class="panel empty"><i class="ri-image-line"></i><p>这个相册还没有图片</p><p style="margin-top:10px"><button class="btn btn-plain" onclick="openLinkModal()"><i class="ri-link"></i>外链添加</button> <button class="btn" onclick="pickFiles()"><i class="ri-upload-2-line"></i>上传图片</button></p></div>';
+      return;
+    }
+    v.innerHTML = '<div class="drop-zone" onclick="pickFiles()" id="drop-zone"><i class="ri-upload-cloud-2-line"></i>点击选择图片上传<small>支持多选 · jpg/png/gif/webp · 单张不超过 20MB</small></div>' +
+      '<div class="photos">' + list.map(function(p){
+      return '<div class="photo-card" data-pid="'+p.pid+'" draggable="true"><label class="batch-chk" title="选择" draggable="false"><input type="checkbox" class="bchk-photo" value="'+p.pid+'" draggable="false" onchange="refreshBatch(\'photo\')"></label><div class="photo-img" data-src="'+esc(p.url)+'"><img src="'+esc(p.thumb||p.url)+'" alt="" loading="lazy" draggable="false">'+(p.is_cover?'<span class="cover-tag"><i class="ri-star-fill"></i>封面</span>':'')+
+        '<div class="photo-mask">'+
+        '<button class="icon-btn" title="设为封面" onclick="event.stopPropagation();setCover('+aid+',\''+esc(p.url)+'\')"><i class="ri-star-line"></i></button>'+
+        '<button class="icon-btn" title="编辑" onclick="event.stopPropagation();openPhotoModal('+p.pid+','+aid+',\''+esc(p.url).replace(/'/g,"\\'")+'\',\''+esc(p.title||'').replace(/'/g,"\\'")+'\')"><i class="ri-edit-line"></i></button>'+
+        '<button class="icon-btn danger" title="删除" onclick="event.stopPropagation();delPhoto('+aid+','+p.pid+')"><i class="ri-delete-bin-line"></i></button>'+
+        '</div></div>'+
+        '<div class="photo-body"><span class="p-title">'+esc(p.title||'未命名')+'</span></div></div>';
+    }).join('') + '</div>';
+    renderStorageBadge();
+    refreshBatch('photo');
+    enableDrag();
+    setTimeout(initAdminLightbox, 50);
+  }).catch(function(){toast('加载失败');v.innerHTML=''});
+}
+
+/* ================= 拖拽排序 ================= */
+var dragPid = null;
+var dragMoved = false;
+function enableDrag(){
+  var v = document.querySelector('.photos');
+  if(!v) return;
+  v.querySelectorAll('.photo-card').forEach(function(card){
+    card.addEventListener('dragstart', function(e){
+      if(e.target.closest('.batch-chk')) return;
+      dragPid = parseInt(card.getAttribute('data-pid'));
+      dragMoved = false;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try{e.dataTransfer.setData('text/plain', String(dragPid))}catch(err){}
+    });
+    card.addEventListener('dragend', function(){
+      card.classList.remove('dragging');
+      v.querySelectorAll('.photo-card').forEach(function(c){c.classList.remove('drag-over')});
+      if(dragMoved){saveOrder()}
+    });
+    card.addEventListener('dragover', function(e){
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      v.querySelectorAll('.photo-card').forEach(function(c){c.classList.remove('drag-over')});
+      card.classList.add('drag-over');
+    });
+    card.addEventListener('drop', function(e){
+      e.preventDefault();
+      var to = parseInt(card.getAttribute('data-pid'));
+      if(dragPid && to && dragPid !== to){
+        var cards = Array.prototype.slice.call(v.querySelectorAll('.photo-card'));
+        var i1 = -1, i2 = -1;
+        cards.forEach(function(c,i){
+          if(parseInt(c.getAttribute('data-pid'))===dragPid) i1=i;
+          if(parseInt(c.getAttribute('data-pid'))===to) i2=i;
+        });
+        if(i1>=0 && i2>=0){
+          if(i1<i2){v.insertBefore(cards[i1], cards[i2].nextSibling)}
+          else{v.insertBefore(cards[i1], cards[i2])}
+          dragMoved = true;
+        }
+      }
+    });
+  });
+}
+function saveOrder(){
+  var v = document.querySelector('.photos');
+  if(!v) return;
+  var pids = Array.prototype.slice.call(v.querySelectorAll('.photo-card')).map(function(c){return c.getAttribute('data-pid')}).join(',');
+  api(qs({do:'photo_sort', aid:curAid, pids:pids})).then(function(r){
+    if(r.ok){toast('顺序已保存')} else toast(r.msg||'排序保存失败');
+  }).catch(function(){toast('排序保存失败')});
+}
+
+/* ================= 批量删除 ================= */
+function renderBatchTop(kind){
+  var ta = document.getElementById('top-actions');
+  if(!ta) return;
+  var btn = '<button class="batch-top-btn" id="btn-toggle-batch" onclick="toggleBatchAll(\''+kind+'\')"><i class="ri-checkbox-multiple-line"></i>全选</button>' +
+            '<button class="batch-top-btn danger" id="btn-batch-del" onclick="batchDelete(\''+kind+'\')" disabled><i class="ri-delete-bin-line"></i>批量删除</button>';
+  ta.insertAdjacentHTML('afterbegin', btn);
+}
+function refreshBatch(kind){
+  var boxes = document.querySelectorAll('.bchk-'+kind);
+  var n = 0;
+  Array.prototype.forEach.call(boxes, function(b){ if(b.checked) n++; });
+  var btn = document.getElementById('btn-batch-del');
+  if(btn){ btn.disabled = n===0; btn.classList.toggle('active', n>0); }
+  var all = document.getElementById('btn-toggle-batch');
+  if(all){ all.classList.toggle('active', n>0 && n===boxes.length); }
+  Array.prototype.forEach.call(boxes, function(b){
+    var lb = b.closest('.batch-chk');
+    if(lb) lb.classList.toggle('checked', b.checked);
+  });
+}
+function toggleBatchAll(kind){
+  var boxes = document.querySelectorAll('.bchk-'+kind);
+  var on = false;
+  Array.prototype.forEach.call(boxes, function(b){ if(!b.checked) on = true; });
+  Array.prototype.forEach.call(boxes, function(b){ b.checked = on; });
+  refreshBatch(kind);
+}
+function batchDelete(kind){
+  var boxes = document.querySelectorAll('.bchk-'+kind+':checked');
+  var ids = [];
+  Array.prototype.forEach.call(boxes, function(b){ ids.push(parseInt(b.value)); });
+  if(!ids.length) return;
+  var label = kind==='album' ? '相册' : '图片';
+  var tip = kind==='album' ? '相册内的图片记录也会一并删除。' : '';
+  if(!confirm('确定删除选中的 '+ids.length+' 个'+label+'？'+tip)) return;
+  var p = {do: kind==='album' ? 'album_batch_delete' : 'photo_batch_delete', ids: ids.join(',')};
+  api(qs(p)).then(function(r){
+    if(r.ok){ toast('已删除 '+(r.count||ids.length)+' 个'+label); if(kind==='album') goList(); else renderPhotos(curAid); }
+    else toast(r.msg||'删除失败');
+  }).catch(function(){toast('删除失败')});
+}
+
+/* ================= 上传 ================= */
+function pickFiles(){document.getElementById('file-input').click()}
+document.getElementById('file-input').addEventListener('change', function(){
+  var inp = this;
+  if(!inp.files.length || !curAid) return;
+  var fd = new FormData();
+  fd.append('do','upload');
+  fd.append('aid', curAid);
+  for(var i=0;i<inp.files.length;i++) fd.append('file[]', inp.files[i]);
+  /* 详情页动作区最后一个按钮才是「上传图片」（前面还有返回按钮） */
+  var btns = document.querySelectorAll('#top-actions .btn');
+  var btn = btns.length ? btns[btns.length-1] : null;
+  var old = btn ? btn.innerHTML : '';
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="ri-loader-4-line"></i>上传中…'}
+  api(null, fd).then(function(r){
+    if(r.ok){
+      var msg = '上传成功 ' + (r.count||0) + ' 张';
+      if(r.failed && r.failed.length){
+        msg += '，失败 ' + r.failed.length + ' 张';
+        var first = r.failed[0];
+        if(first){ msg += '：' + first.name + '（' + first.msg + '）'; }
+      }
+      toast(msg);
+      renderPhotos(curAid);
+    } else {
+      toast(r.msg||'上传失败');
+      if(btn){btn.disabled=false;btn.innerHTML=old}
+    }
+  }).catch(function(){toast('上传失败');if(btn){btn.disabled=false;btn.innerHTML=old}});
+  inp.value='';
+});
+
+/* ================= 相册编辑 ================= */
+function openAlbumModal(aid){
+  editingAid = aid;
+  document.getElementById('modal-title').innerHTML = aid ? '<i class="ri-edit-2-line"></i>编辑相册' : '<i class="ri-add-line"></i>新建相册';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-cover').value = '';
+  document.getElementById('f-cover-field').style.display = aid ? 'block' : 'none';
+  if(aid){
+    api(qs({do:'album_list'})).then(function(r){
+      (r.list||[]).forEach(function(x){
+        if(x.aid==aid){
+          document.getElementById('f-name').value = x.name||'';
+          document.getElementById('f-desc').value = x.description||'';
+          document.getElementById('f-cover').value = x.cover||'';
+        }
+      });
+    });
+  }
+  document.getElementById('modal-mask').classList.add('show');
+  document.getElementById('f-name').focus();
+}
+function saveAlbum(){
+  var name = document.getElementById('f-name').value.trim();
+  if(!name){toast('请填写相册名称');return}
+  var p = {do:'album_save', aid:editingAid, name:name, description:document.getElementById('f-desc').value.trim(), cover:document.getElementById('f-cover').value.trim()};
+  api(qs(p)).then(function(r){
+    if(r.ok){toast(editingAid?'已保存':'已创建');closeModal();goList()}
+    else toast(r.msg||'保存失败');
+  }).catch(function(){toast('保存失败')});
+}
+function closeModal(){document.getElementById('modal-mask').classList.remove('show')}
+function delAlbum(aid){
+  if(!confirm('确定删除这个相册？相册内图片记录也会删除。')) return;
+  api(qs({do:'album_delete', aid:aid})).then(function(r){
+    if(r.ok){toast('已删除');goList()} else toast(r.msg||'删除失败');
+  }).catch(function(){toast('删除失败')});
+}
+function moveAlbum(aid, dir){
+  api(qs({do:'album_move', aid:aid, dir:dir})).then(function(r){
+    if(r.ok){goList()} else toast(r.msg||'操作失败');
+  }).catch(function(){toast('操作失败')});
+}
+
+/* ================= 图片操作 ================= */
+var editPid = 0, editAid = 0;
+function openPhotoModal(pid, aid, url, title){
+  editPid = pid; editAid = aid;
+  document.getElementById('modal-title').innerHTML = '<i class="ri-edit-2-line"></i>编辑图片';
+  document.getElementById('f-name').value = title||'';
+  document.getElementById('f-name').placeholder = '图片标题（可选）';
+  document.getElementById('f-desc').style.display = 'none';
+  document.getElementById('f-cover-field').style.display = 'block';
+  document.getElementById('f-cover').value = url||'';
+  document.getElementById('f-cover-field').querySelector('label').textContent = '图片地址 *';
+  document.getElementById('modal-ok').onclick = savePhoto;
+  document.getElementById('modal-mask').classList.add('show');
+}
+function savePhoto(){
+  var url = document.getElementById('f-cover').value.trim();
+  var title = document.getElementById('f-name').value.trim();
+  if(!url){toast('请输入图片地址');return}
+  api(qs({do:'photo_save', pid:editPid, aid:editAid, url:url, title:title})).then(function(r){
+    if(r.ok){toast('已保存');closeModal();renderPhotos(editAid)}
+    else toast(r.msg||'保存失败');
+  }).catch(function(){toast('保存失败')});
+}
+/* ================= 外链添加图片 ================= */
+function openLinkModal(){
+  editPid = 0; editAid = curAid;
+  document.getElementById('modal-title').innerHTML = '<i class="ri-link"></i>外链添加图片';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-name').placeholder = '图片标题（可选）';
+  document.getElementById('f-desc').style.display = 'none';
+  document.getElementById('f-cover-field').style.display = 'block';
+  document.getElementById('f-cover').value = '';
+  document.getElementById('f-cover-field').querySelector('label').textContent = '图片地址 *';
+  document.getElementById('modal-ok').onclick = savePhotoLink;
+  document.getElementById('modal-mask').classList.add('show');
+  document.getElementById('f-cover').focus();
+}
+function savePhotoLink(){
+  var url = document.getElementById('f-cover').value.trim();
+  var title = document.getElementById('f-name').value.trim();
+  if(!url){toast('请输入图片地址');return}
+  api(qs({do:'photo_link', aid:editAid, url:url, title:title})).then(function(r){
+    if(r.ok){toast('已添加');closeModal();renderPhotos(editAid)}
+    else toast(r.msg||'添加失败');
+  }).catch(function(){toast('添加失败')});
+}
+function delPhoto(aid, pid){
+  if(!confirm('确定删除这张图片？')) return;
+  api(qs({do:'photo_delete', pid:pid})).then(function(r){
+    if(r.ok){toast('已删除');renderPhotos(aid)} else toast(r.msg||'删除失败');
+  }).catch(function(){toast('删除失败')});
+}
+function movePhoto(aid, pid, dir){
+  api(qs({do:'photo_move', aid:aid, pid:pid, dir:dir})).then(function(r){
+    if(r.ok){renderPhotos(aid)} else toast(r.msg||'操作失败');
+  }).catch(function(){toast('操作失败')});
+}
+function setCover(aid, url){
+  api(qs({do:'cover', aid:aid, cover:url})).then(function(r){
+    if(r.ok){toast('已设为封面');renderPhotos(aid)} else toast(r.msg||'操作失败');
+  }).catch(function(){toast('操作失败')});
+}
+
+/* ================= 相册页设置（内嵌视图） ================= */
+function goSettings(){
+  curAid = 0;
+  document.getElementById('page-title').innerHTML = '<i class="ri-settings-3-line"></i>相册页设置 <span class="count" id="count-badge"></span>';
+  document.getElementById('top-actions').innerHTML = '';
+  var navs = document.querySelectorAll('.side-nav button');
+  navs.forEach(function(b){b.classList.remove('active')});
+  navs[1].classList.add('active');
+  var v = document.getElementById('view');
+  v.innerHTML = '<div class="loading"><i class="ri-loader-4-line"></i>加载中…</div>';
+  api(qs({do:'get_settings'})).then(function(r){
+    if(!r.ok){toast(r.msg||'加载失败');v.innerHTML='';return}
+    var st = r.settings||{};
+    var mode = st.page_mode||'list', lay = st.layout||'grid';
+    var albumOpts = '<option value="0">— 不指定（显示相册列表）—</option>' + (r.albums||[]).map(function(a){
+      return '<option value="'+a.aid+'"'+(a.aid==st.default_aid?' selected':'')+'>'+esc(a.name)+'（ID '+a.aid+'，'+a.count+' 张）</option>';
+    }).join('');
+    var lays = [['grid','网格'],['masonry','瀑布流'],['mosaic','拼图'],['list','列表'],['slide','幻灯片']];
+    v.innerHTML = '<div class="panel" style="max-width:640px;padding:26px">'+
+      '<div class="field"><label>相册页显示模式</label>'+
+      '<div style="display:flex;gap:8px">'+
+      '<label class="radio-chip"><input type="radio" name="pg-mode" value="list"'+(mode==='list'?' checked':'')+'><span>相册列表</span></label>'+
+      '<label class="radio-chip"><input type="radio" name="pg-mode" value="album"'+(mode==='album'?' checked':'')+'><span>直接显示指定相册</span></label>'+
+      '</div><p style="font-size:11px;color:var(--text-3);margin-top:4px">前台 albums.html 默认显示什么：相册列表，或直接展示某个相册的图片</p></div>'+
+      '<div class="field"><label>默认相册</label><select id="f-default-aid-sel">'+albumOpts+'</select>'+
+      '<p style="font-size:11px;color:var(--text-3);margin-top:4px">「直接显示指定相册」模式下展示的相册</p></div>'+
+      '<div class="field"><label>相册默认布局</label>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+      lays.map(function(x){
+        return '<label class="radio-chip"><input type="radio" name="pg-layout" value="'+x[0]+'"'+(lay===x[0]?' checked':'')+'><span>'+x[1]+'</span></label>';
+      }).join('')+
+      '</div><p style="font-size:11px;color:var(--text-3);margin-top:4px">相册页首次打开时的图片展示布局，前台工具栏仍可切换</p></div>'+
+      '<div style="margin-top:22px"><button class="btn" onclick="saveSettingsView()"><i class="ri-check-line"></i>保存设置</button></div>'+
+      '</div>';
+  }).catch(function(){toast('加载失败');v.innerHTML=''});
+}
+function saveSettingsView(){
+  var mode = document.querySelector('input[name="pg-mode"]:checked');
+  var lay = document.querySelector('input[name="pg-layout"]:checked');
+  var p = {do:'save_settings', page_mode: mode?mode.value:'list', default_aid: document.getElementById('f-default-aid-sel').value, layout: lay?lay.value:'grid'};
+  api(qs(p)).then(function(r){
+    if(r.ok){toast('设置已保存');goSettings()} else toast(r.msg||'保存失败');
+  }).catch(function(){toast('保存失败')});
+}
+
+
+/* ================= 灯箱 ================= */
+function initAdminLightbox(){
+  if (typeof jQuery === "undefined" || typeof jQuery.fn.lightGallery === "undefined") return;
+  var $photos = jQuery(".photos");
+  if (!$photos.length) return;
+  if ($photos.data("lightGallery")) {
+    try { $photos.data("lightGallery").destroy(true); } catch(e){}
+  }
+  $photos.lightGallery({
+    selector: ".photo-img",
+    download: true, counter: true, loop: true, escKey: true, keyPress: true,
+    controls: true, hideBarsDelay: 4000, mode: "lg-fade", speed: 400,
+    thumbnail: true, showThumbByDefault: false, thumbWidth: 80, thumbContHeight: 100,
+    pager: true, zoom: true, fullScreen: true,
+    autoplay: false, autoplayControls: true, pause: 3000, progressBar: true
+  });
+}
+
+/* ================= 初始 ================= */
+document.getElementById('front-link').href = location.origin + '/albums.html';
+document.getElementById('modal-ok').onclick = saveAlbum;
+loadStorage();
+goList();
+</script>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/lightgallery-v3.min.js"></script>
+<script src="../assets/js/lg-thumbnail.min.js"></script>
+<script src="../assets/js/lg-pager.min.js"></script>
+<script src="../assets/js/lg-zoom.min.js"></script>
+<script src="../assets/js/lg-fullscreen-v2.min.js"></script>
+<script src="../assets/js/lg-autoplay.min.js"></script>
+</body>
+</html>

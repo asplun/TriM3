@@ -1,0 +1,38 @@
+/* macOS 代码块 — 默认深色 One Dark */
+.code-block { position: relative; margin: 1.8em 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.15); background: #282c34; }
+.code-block-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #21252b; user-select: none; }
+.code-block-dots { display: flex; gap: 8px; }
+.code-block-dots span { width: 12px; height: 12px; border-radius: 50%; display: block; }
+.code-block-dots span:nth-child(1) { background: #ff5f57; }
+.code-block-dots span:nth-child(2) { background: #febc2e; }
+.code-block-dots span:nth-child(3) { background: #28c840; }
+.code-block-lang { font-size: 12px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; margin-left: 4px; font-family: -apple-system, sans-serif; }
+.code-block-actions { margin-left: auto; display: flex; gap: 6px; }
+.code-block-actions button { background: rgba(255,255,255,.1); border: none; color: #aaa; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.code-block-actions button:hover { background: rgba(255,255,255,.2); color: #fff; }
+.code-block-actions button.copied { background: #28c840; color: #fff; }
+.code-block pre, .code-block code { text-shadow: none !important; }
+.code-block pre { margin: 0 !important; padding: 16px 20px !important; border-radius: 0 !important; background: #282c34 !important; color: #abb2bf !important; font-size: 13.5px !important; line-height: 1.7 !important; overflow-x: auto; font-family: ui-monospace, Menlo, Consolas, monospace !important; box-shadow: none !important; }
+.code-block.cb-light { background: #f6f8fa; }
+.code-block.cb-light pre { background: #f6f8fa !important; color: #24292e !important; }
+.code-block .token.comment,.code-block .token.prolog,.code-block .token.doctype,.code-block .token.cdata { color: #5c6370; font-style: italic; }
+.code-block .token.punctuation { color: #abb2bf; }
+.code-block .token.property,.code-block .token.tag,.code-block .token.constant,.code-block .token.symbol,.code-block .token.deleted { color: #e06c75; }
+.code-block .token.boolean,.code-block .token.number { color: #d19a66; }
+.code-block .token.selector,.code-block .token.attr-name,.code-block .token.char,.code-block .token.builtin,.code-block .token.inserted { color: #98c379; }
+.code-block .token.operator,.code-block .token.entity,.code-block .token.url { color: #56b6c2; background: transparent; }
+.code-block .token.atrule,.code-block .token.attr-value,.code-block .token.keyword { color: #c678dd; }
+.code-block .token.function,.code-block .token.class-name { color: #61afef; }
+.code-block .token.string { color: #98c379; }
+.code-block .token.regex,.code-block .token.important,.code-block .token.variable { color: #e06c75; }
+.code-block.cb-light .token.comment,.code-block.cb-light .token.prolog,.code-block.cb-light .token.doctype,.code-block.cb-light .token.cdata { color: #6a737d; }
+.code-block.cb-light .token.punctuation { color: #24292e; }
+.code-block.cb-light .token.property,.code-block.cb-light .token.tag,.code-block.cb-light .token.constant,.code-block.cb-light .token.symbol,.code-block.cb-light .token.deleted { color: #d73a49; }
+.code-block.cb-light .token.boolean,.code-block.cb-light .token.number { color: #005cc5; }
+.code-block.cb-light .token.selector,.code-block.cb-light .token.attr-name,.code-block.cb-light .token.char,.code-block.cb-light .token.builtin,.code-block.cb-light .token.inserted { color: #22863a; }
+.code-block.cb-light .token.operator,.code-block.cb-light .token.entity,.code-block.cb-light .token.url { color: #d73a49; background: transparent; }
+.code-block.cb-light .token.atrule,.code-block.cb-light .token.attr-value,.code-block.cb-light .token.keyword { color: #d73a49; }
+.code-block.cb-light .token.function,.code-block.cb-light .token.class-name { color: #6f42c1; }
+.code-block.cb-light .token.string { color: #032f62; }
+.code-block.cb-light .token.regex,.code-block.cb-light .token.important,.code-block.cb-light .token.variable { color: #e99071; }
+@media (max-width: 640px) { .code-block pre { font-size: 12.5px !important; padding: 12px 14px !important; } .code-block-header { padding: 8px 12px; } }

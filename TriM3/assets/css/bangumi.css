@@ -1,0 +1,59 @@
+/* ============================================================
+   TriM3 · B 站番剧（page-bangumi.php）v1
+   布局/筛选/卡片骨架复用 douban.css 的 MD3 体系（.douban-*），
+   本文件只承载番剧专属细节：角标、进度行、微调
+   ============================================================ */
+
+/* ---- 右上角徽章（独家 / 大会员 等） ---- */
+.bgm-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #fb7299, #f25d8e);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.5;
+  box-shadow: 0 1px 4px rgba(242, 93, 142, .35);
+}
+
+/* ---- 进度行 ---- */
+.bgm-ep {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--md-sys-color-primary, #6750a4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bgm-ep i { font-size: 12px; flex: none; }
+.bgm-item.is-finished .bgm-ep { color: var(--md-sys-color-on-surface-variant, #49454f); font-weight: 500; }
+
+/* ---- 状态胶囊（左上一贯风格，叠在角标不冲突） ---- */
+.bgm-status { top: 6px; left: 6px; }
+
+/* ---- 卡片 hover：封面轻微放大（同豆瓣） ---- */
+.bgm-item { background: var(--md-sys-color-surface-container-low, #f7f2fa); }
+.bgm-item:hover { transform: translateY(-2px); }
+.bgm-item:hover .bgm-cover img { transform: scale(1.04); }
+
+/* ---- 简介行（复用 douban-comment） ---- */
+
+/* ---- Tab 在窄栏 4 项时压缩间距 ---- */
+.bgm-tab { padding-left: 14px; padding-right: 14px; }
+.bgm-tab i { font-size: 15px; }
+
+/* ---- 空态（复用 douban-empty） ---- */
+
+/* ---- 移动端 ---- */
+@media (max-width: 560px) {
+  .bgm-tab { padding: 10px 10px 9px; font-size: 12px; gap: 5px; }
+  .bgm-tab i { display: none; }
+  .bgm-badge { font-size: 9px; padding: 1px 5px; }
+}

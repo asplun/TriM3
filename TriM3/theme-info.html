@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TriM3 v1.2.5 · 主题说明</title>
+<style>
+:root{--p:#6750a4;--pc:#e9ddff;--bg:#f6f2fb;--s:#fff;--t:#1c1b1f;--d:#635d6e;--l:#e8e1f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"HarmonyOS Sans","MiSans","PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:linear-gradient(135deg,#f6f2fb,#fdf4fb,#f2f6fb);color:var(--t);line-height:1.75;padding:40px 16px 64px}
+.wrap{max-width:900px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#6750a4,#7d5fd0,#a06cd5);border-radius:26px;padding:44px 46px 38px;color:#fff;margin-bottom:22px;box-shadow:0 14px 44px rgba(103,80,164,.28)}
+.hero h1{font-size:32px;margin-bottom:8px}
+.hero .ver{display:inline-block;background:rgba(255,255,255,.2);padding:4px 14px;border-radius:20px;font-size:14px;margin-bottom:16px}
+.hero p{opacity:.9;font-size:16px}
+.card{background:var(--s);border-radius:20px;padding:28px 32px;margin-bottom:18px;box-shadow:0 4px 20px rgba(103,80,164,.06)}
+.card h2{font-size:20px;margin-bottom:16px;color:var(--p);display:flex;align-items:center;gap:8px}
+.card h2::before{content:"";width:4px;height:20px;background:var(--p);border-radius:2px}
+.feat{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.feat-item{background:var(--bg);border-radius:12px;padding:14px 16px;font-size:14px}
+.feat-item b{color:var(--p)}
+ul{padding-left:20px;font-size:15px}
+li{margin-bottom:6px}
+.tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;margin-right:6px}
+.tag-sec{background:#ffe0e0;color:#c0392b}
+.tag-bug{background:#fff3cd;color:#856404}
+.tag-perf{background:#d4edda;color:#155724}
+footer{text-align:center;color:var(--d);font-size:13px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+<h1>TriM3</h1>
+<span class="ver">v1.2.5</span>
+<p>Material Design 3 三栏响应式个人博客主题 · Swup 无刷新导航 · 安全加固 · 性能优化</p>
+</div>
+
+<div class="card">
+<h2>主题特色</h2>
+<div class="feat">
+<div class="feat-item"><b>三栏 MD3 布局</b><br>亚克力大底 + 纯白中栏 + 右侧边栏，响应式适配</div>
+<div class="feat-item"><b>Swup 无刷新</b><br>全站 Swup 导航，播放状态/滚动位置自动保留</div>
+<div class="feat-item"><b>动态取色</b><br>Material You 效果，Banner 图片自动提取主色</div>
+<div class="feat-item"><b>音乐歌单页</b><br>两栏布局 + 歌词滚动，完全接入主题 TriPlayer</div>
+<div class="feat-item"><b>说说/相册</b><br>独立说说流 + 相册瀑布流，图片入场动画</div>
+<div class="feat-item"><b>友链/豆瓣/番剧</b><br>友链卡片墙 + 豆瓣观影 + Bangumi 追番</div>
+<div class="feat-item"><b>全站滚动条</b><br>跟随主题配色，暗色模式加深，双浏览器兼容</div>
+<div class="feat-item"><b>深色模式</b><br>一键切换，换页保持，夜间星空流星</div>
+<div class="feat-item"><b>代码高亮</b><br>macOS 风格 Prism + One Dark Pro，按需加载</div>
+<div class="feat-item"><b>灯箱画廊</b><br>lightgallery 全站接入，单图自适应不留白</div>
+<div class="feat-item"><b>图片代理缓存</b><br>CDN 自动签名 + img-cache 代理，懒加载优化</div>
+<div class="feat-item"><b>后台可视化配置</b><br>多 Tab 设置面板，零代码定制，动态色开关</div>
+</div>
+</div>
+
+<div class="card">
+<h2>v1.2.5 更新内容</h2>
+<ul>
+<li><b>全站版本号统一为 1.2.5</b>：<code>@version</code>、静态资源 <code>?v=</code>、后台首页版本显示、README、主题说明全部对齐</li>
+<li><b>安全加固</b>：图片代理去除硬编码表名并收紧开放重定向；音乐 API CORS 改为同源；CSRF 校验升级为完整 Origin 对比；相册上传增加真实图片内容校验</li>
+<li><b>性能优化</b>：数据库自检标记改为优先读取 <code>tri3DbInit</code>，减少每请求查询；清理 4 个无引用旧构建产物，发布包体积进一步下降</li>
+<li><b>友链截图修复</b>：18 张网站截图改为首屏直载，真实背景全部加载成功，不再停留在占位图</li>
+<li><b>代码门禁</b>：新增 <code>tools/code-gate.sh</code>，覆盖 PHP 语法、危险调用、调试输出、备份文件、安全模式和旧资源检查</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>修复项</h2>
+<ul>
+<li><span class="tag tag-bug">修复</span>友链页网站截图背景停留在占位图、无法显示真实截图的问题</li>
+<li><span class="tag tag-bug">修复</span>图片代理在非白名单域名上可能形成开放重定向的问题</li>
+<li><span class="tag tag-bug">修复</span>音乐 API 使用 <code>*</code> CORS 导致任意站点可消耗代理流量的问题</li>
+<li><span class="tag tag-bug">修复</span>CSRF 仅比较 Host、未校验协议和端口的问题</li>
+<li><span class="tag tag-bug">修复</span>相册上传仅校验扩展名、未校验真实图片内容的问题</li>
+<li><span class="tag tag-bug">修复</span>数据库自检每次请求都额外查询 options 表的问题</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>环境要求</h2>
+<ul>
+<li>Typecho 1.3+</li>
+<li>PHP 7.4+（推荐 8.5）</li>
+<li>必需插件：<b>TriM3Core</b>（后台编辑器资源与核心 API 依赖）</li>
+</ul>
+<h2 style="margin-top:20px">安装</h2>
+<ul>
+<li>解压到 <code>usr/themes/</code> 目录，保证目录名为 <code>TriM3</code></li>
+<li>后台「控制台 → 外观」启用 TriM3</li>
+<li>在「设置外观」中按需配置</li>
+<li>升级后请硬刷新 <b>Ctrl+F5</b>，避免旧静态资源缓存</li>
+</ul>
+</div>
+
+<footer>TriM3 v1.2.5 · Material Design 3 for Typecho</footer>
+</div>
+</body>
+</html>

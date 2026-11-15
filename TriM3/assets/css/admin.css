@@ -1,0 +1,1093 @@
+/* ============================================================
+ * TriM3 后台设置面板（v2 布局 · 参考 7b2 / 子比：左侧菜单 + 内容区）
+ * ============================================================ */
+main.main,
+.body.container,
+.row.typecho-page-main,
+.typecho-page-main .col-mb-12.col-tb-8.col-tb-offset-2 {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  box-sizing: border-box;
+}
+.tri3-form {
+  position: relative;
+  background: transparent;
+  width: 100%;
+}
+.tri3-form .typecho-option {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ---- 顶部品牌条（hero） ---- */
+.tri3-form .tri3-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 22px;
+  margin: 0 0 16px;
+  background: linear-gradient(120deg, var(--tri-primary-container, #eaddff), rgba(255, 255, 255, .35));
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .08));
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.tri3-form .tri3-hero::after {
+  content: '';
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .55), transparent 70%);
+  pointer-events: none;
+}
+.tri3-form .tri3-hero-cover {
+  flex: none;
+  width: 108px;
+  height: 66px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .14);
+  background: #fff;
+}
+.tri3-form .tri3-hero-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.tri3-form .tri3-hero-info {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+.tri3-form .tri3-hero-info h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tri-text-headline, #1a1c1e);
+}
+.tri3-form .tri3-hero-ver {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+.tri3-form .tri3-hero-info > p {
+  font-size: 12.5px;
+  color: var(--tri-text-desc, #5b5d64);
+  margin: 5px 0 0;
+}
+.tri3-form .tri3-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 10px;
+}
+.tri3-form .tri3-hero-meta span {
+  font-size: 12px;
+  color: var(--tri-text-body, rgba(0, 0, 0, .72));
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.tri3-form .tri3-hero-meta i {
+  font-size: 13px;
+  color: var(--tri-primary, #6750a4);
+}
+.tri3-form .tri3-hero-actions {
+  flex: none;
+  display: flex;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+.tri3-form .tri3-hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+  box-shadow: 0 2px 8px rgba(103, 80, 164, .28);
+}
+.tri3-form .tri3-hero-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(103, 80, 164, .38);
+  opacity: .94;
+}
+.tri3-form .tri3-hero-link.ghost {
+  color: var(--tri-text-title, #1a1c1e);
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+}
+.tri3-form .tri3-hero-link.ghost:hover {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+}
+
+/* ---- 主体：左侧菜单 + 右侧内容 ---- */
+.tri3-form .tri3-body {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.tri3-form .tri3-tabs {
+  flex: none;
+  width: 216px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px;
+  background: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .07));
+  border-radius: 14px;
+  height: fit-content;
+  position: sticky;
+  top: 12px;
+}
+.tri3-form .tri3-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 13px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tri-text-body, rgba(0, 0, 0, .7));
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .15s ease, color .15s ease;
+}
+.tri3-form .tri3-tab i {
+  font-size: 17px;
+  color: var(--tri-text-caption, rgba(0, 0, 0, .5));
+  transition: color .15s ease;
+}
+.tri3-form .tri3-tab:hover {
+  background: rgba(0, 0, 0, .05);
+}
+.tri3-form .tri3-tab.is-active {
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  box-shadow: 0 3px 10px rgba(103, 80, 164, .3);
+}
+.tri3-form .tri3-tab.is-active i {
+  color: inherit;
+}
+
+.tri3-form .tri3-panels {
+  flex: 1;
+  min-width: 0;
+}
+.tri3-form .tri3-panel {
+  display: none;
+  animation: tri3PanelIn .22s ease;
+}
+.tri3-form .tri3-panel.is-active {
+  display: block;
+}
+@keyframes tri3PanelIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- 面板头（统一卡片头） ---- */
+.tri3-form .tri3-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 18px;
+  margin: 0 0 14px;
+  background: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .07));
+  border-radius: 14px;
+}
+.tri3-form .tri3-panel-head i {
+  font-size: 26px;
+  flex: none;
+}
+.tri3-form .tri3-panel-head div { flex: 1; min-width: 0; }
+.tri3-form .tri3-panel-head b {
+  font-size: 15px;
+  color: var(--tri-text-headline, #1a1c1e);
+  display: block;
+}
+.tri3-form .tri3-panel-head p {
+  font-size: 12px;
+  color: var(--tri-text-desc, #5b5d64);
+  margin: 3px 0 0;
+}
+
+/* ---- 分组卡片（section） ---- */
+.tri3-form .tri3-section {
+  margin: 0 0 16px;
+  background: #fff;
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .08));
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .03);
+}
+.tri3-form .tri3-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  background: linear-gradient(180deg, var(--tri-surface-container-low, #f7f2fa), rgba(247, 242, 250, .4));
+  border-bottom: 1px solid var(--tri-outline, rgba(0, 0, 0, .06));
+}
+.tri3-form .tri3-section-ico {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  color: var(--tri-primary, #6750a4);
+  background: var(--tri-primary-container, #eaddff);
+  border-radius: 10px;
+}
+.tri3-form .tri3-section-txt { flex: 1; min-width: 0; }
+.tri3-form .tri3-section-txt b {
+  font-size: 13.5px;
+  color: var(--tri-text-title, #1a1c1e);
+  display: block;
+}
+.tri3-form .tri3-section-txt p {
+  font-size: 11.5px;
+  color: var(--tri-text-desc, #5b5d64);
+  margin: 2px 0 0;
+  line-height: 1.45;
+}
+.tri3-form .tri3-section-body {
+  padding: 4px 0;
+}
+
+/* ---- 设置项：两列布局（label | 控件） ---- */
+/* Typecho 1.3: .typecho-option 是 <ul><li>label+input+desc</li></ul>，grid 必须在 li 上 */
+.tri3-form .tri3-section .typecho-option {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+.tri3-form .tri3-section .typecho-option > li:not(:has(> span)) {
+  display: grid;
+  grid-template-columns: 236px 1fr;
+  gap: 4px 22px;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, .045);
+  transition: background .12s ease;
+}
+.tri3-form .tri3-section .typecho-option > li:not(:has(> span)):last-child {
+  border-bottom: none;
+}
+.tri3-form .tri3-section .typecho-option > li:not(:has(> span)):hover {
+  background: rgba(103, 80, 164, .028);
+}
+.tri3-form .typecho-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tri-text-title, #1a1c1e);
+  line-height: 1.4;
+  padding-top: 5px;
+}
+.tri3-form .typecho-label::after { content: ''; }
+.tri3-form .description {
+  grid-column: 2;
+  font-size: 11.5px;
+  color: var(--tri-text-desc, #5b5d64);
+  margin: 4px 0 0;
+  line-height: 1.5;
+}
+.tri3-form .tri3-section .typecho-option input[type="text"],
+.tri3-form .tri3-section .typecho-option input[type="password"],
+.tri3-form .tri3-section .typecho-option input[type="number"],
+.tri3-form .tri3-section .typecho-option input[type="url"],
+.tri3-form .tri3-section .typecho-option input[type="email"],
+.tri3-form .tri3-section .typecho-option textarea {
+  width: 100%;
+  max-width: 780px;
+  box-sizing: border-box;
+  font-size: 13px;
+  color: var(--tri-text-title, #1a1c1e);
+  background: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .12));
+  border-radius: 9px;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.tri3-form .tri3-section .typecho-option select {
+  width: 100%;
+  max-width: 780px;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--tri-text-title, #1a1c1e);
+  background-color: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .12));
+  border-radius: 9px;
+  padding: 7px 32px 7px 12px;
+  min-height: 38px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.tri3-form .tri3-section .typecho-option select option {
+  padding: 6px 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1c1e;
+  background: #fff;
+}
+.tri3-form .tri3-section .typecho-option input:focus,
+.tri3-form .tri3-section .typecho-option textarea:focus,
+.tri3-form .tri3-section .typecho-option select:focus {
+  border-color: var(--tri-primary, #6750a4);
+  box-shadow: 0 0 0 3px rgba(103, 80, 164, .14);
+  background: #fff;
+}
+.tri3-form .tri3-section .typecho-option textarea {
+  min-height: 74px;
+  resize: vertical;
+}
+.tri3-form .tri3-section .typecho-option input[type="color"] {
+  width: 46px;
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .14));
+  border-radius: 9px;
+  cursor: pointer;
+  background: transparent;
+}
+/* checkbox/radio 原生输入已隐藏，使用胶囊 label 样式 */
+/* radio / checkbox 选项（Typecho 1.3 结构：li > span > input+label，无 typecho-option-radio 类） */
+.tri3-form .tri3-section .typecho-option > li:has(> span) {
+  list-style: none;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px 14px;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, .045);
+  transition: background .12s ease;
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span):last-child {
+  border-bottom: none;
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span):hover {
+  background: rgba(103, 80, 164, .028);
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span) > .typecho-label {
+  flex: 0 0 220px;
+  padding-top: 7px;
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span) > .description {
+  flex: 1 1 100%;
+  margin-left: 234px;
+  margin-top: 2px;
+}
+/* radio/checkbox 选项（flex 子元素，自然横向排列） */
+.tri3-form .tri3-section .typecho-option > li:has(> span) > span {
+  padding-top: 4px;
+}
+/* radio / checkbox 选项胶囊样式 */
+.tri3-form .tri3-section .typecho-option > li:has(> span) > span label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tri-text-body, rgba(0, 0, 0, .72));
+  background: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .12));
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .14s ease;
+  margin: 0;
+  line-height: 1.4;
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span) > span label:hover {
+  border-color: var(--tri-primary, #6750a4);
+  background: rgba(103, 80, 164, .06);
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span) > span:has(input:checked) label {
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  border-color: var(--tri-primary, #6750a4);
+  box-shadow: 0 1px 4px rgba(103, 80, 164, .25);
+}
+.tri3-form .tri3-section .typecho-option > li:has(> span) > span input {
+  display: none;
+}
+
+/* ---- 首页菜单显示的分类：专用纵向排列 + 拖拽排序 ---- */
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable {
+  display: block;
+  padding: 13px 18px;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > .typecho-label {
+  display: block;
+  flex: none;
+  padding-top: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > .description {
+  margin-left: 0;
+  margin-top: 8px;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span {
+  display: block;
+  padding-top: 0;
+  margin: 0;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row] {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0 !important;
+  padding: 9px 12px;
+  background: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .1));
+  border-radius: 10px;
+  transition: all .15s ease;
+  cursor: default;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row]:hover {
+  border-color: var(--tri-primary, #6750a4);
+  background: rgba(103, 80, 164, .05);
+  box-shadow: 0 2px 8px rgba(103, 80, 164, .12);
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row] > span[data-drag-handle] {
+  flex: 0 0 20px;
+  color: #b0b0c8;
+  font-size: 16px;
+  cursor: grab;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color .15s;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row]:hover > span[data-drag-handle] {
+  color: var(--tri-primary, #6750a4);
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row] label {
+  flex: 1;
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tri-text-body, rgba(0, 0, 0, .72));
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+  box-shadow: none !important;
+  margin: 0;
+  position: relative;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row] label::before {
+  content: '';
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--tri-outline, rgba(0, 0, 0, .25));
+  border-radius: 4px;
+  background: #fff;
+  transition: all .15s ease;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row]:has(input:checked) {
+  border-color: var(--tri-primary, #6750a4);
+  background: rgba(103, 80, 164, .08);
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row]:has(input:checked) label {
+  color: var(--tri-primary, #6750a4);
+  font-weight: 600;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row]:has(input:checked) label::before {
+  background: var(--tri-primary, #6750a4);
+  border-color: var(--tri-primary, #6750a4);
+  position: relative;
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row]:has(input:checked) label::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row].dragging {
+  opacity: .5;
+  transform: scale(.98);
+}
+.tri3-form .tri3-section .typecho-option > li.tri3-cat-sortable > span[data-sort-row].drag-over {
+  border-top: 2px solid var(--tri-primary, #6750a4);
+}
+
+/* ---- 底部说明与保存条 ---- */
+.tri3-form .tri3-note {
+  margin: 4px 0 14px;
+  font-size: 12px;
+  color: var(--tri-text-caption, rgba(0, 0, 0, .55));
+  background: var(--tri-surface-container-low, #f7f2fa);
+  border: 1px dashed var(--tri-outline, rgba(0, 0, 0, .16));
+  border-radius: 12px;
+  padding: 11px 16px;
+  line-height: 1.6;
+}
+.tri3-form .typecho-option-submit {
+  position: sticky;
+  bottom: 14px;
+  z-index: 5;
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--tri-outline, rgba(0, 0, 0, .08));
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .1);
+  display: flex;
+  justify-content: flex-end;
+}
+.tri3-form .typecho-option-submit li {
+  list-style: none;
+  margin: 0;
+}
+.tri3-form .typecho-option-submit button,
+.tri3-form .typecho-option-submit input[type="submit"] {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+  box-shadow: 0 2px 8px rgba(103, 80, 164, .3);
+}
+.tri3-form .typecho-option-submit button:hover,
+.tri3-form .typecho-option-submit input[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(103, 80, 164, .38);
+}
+
+/* ---- 面板操作按钮 ---- */
+.tri3-form .tri3-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.tri3-form .tri3-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  border: none;
+  border-radius: 9px;
+  padding: 8px 15px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+  box-shadow: 0 1px 5px rgba(103, 80, 164, .25);
+}
+.tri3-form .tri3-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(103, 80, 164, .34);
+}
+.tri3-form .tri3-btn.is-danger {
+  background: #b3261e;
+  box-shadow: 0 1px 5px rgba(179, 38, 30, .28);
+}
+.tri3-form .tri3-btn.is-danger:hover {
+  box-shadow: 0 4px 12px rgba(179, 38, 30, .36);
+}
+
+/* ---- 无刷新保存提示 ---- */
+.tri3-save-toast {
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-80px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tri-on-primary, #fff);
+  background: var(--tri-primary, #6750a4);
+  padding: 11px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .22);
+  transition: transform .3s cubic-bezier(.2, .9, .3, 1.2);
+  pointer-events: none;
+}
+.tri3-save-toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---- 响应式：窄屏时左侧菜单变顶部横排 ---- */
+@media (max-width: 900px) {
+  .tri3-form .tri3-body {
+    flex-direction: column;
+  }
+  .tri3-form .tri3-tabs {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    position: static;
+    padding: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tri3-form .tri3-tab {
+    flex: none;
+    white-space: nowrap;
+    width: auto;
+  }
+  .tri3-form .tri3-hero {
+    flex-wrap: wrap;
+  }
+  .tri3-form .tri3-hero-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 720px) {
+  .tri3-form .tri3-section .typecho-option > li:not(:has(> span)) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .tri3-form .description {
+    grid-column: 1;
+  }
+  .tri3-form .typecho-label {
+    padding-top: 0;
+  }
+  .tri3-form .tri3-hero-cover {
+    width: 84px;
+    height: 52px;
+  }
+}
+
+.tri3-manage-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 14px;
+}
+@media (max-width: 1399px) {
+  .tri3-manage-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+}
+.tri3-manage-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px 18px;
+  background: var(--tri-surface);
+  border-radius: var(--tri-radius-md);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 2px 10px rgba(0, 0, 0, .04);
+  color: var(--tri-text-main);
+  text-decoration: none;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.tri3-manage-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .05), 0 10px 24px rgba(0, 0, 0, .08);
+}
+.tri3-manage-card i {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--tri-primary-container);
+  color: var(--tri-on-primary-container);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.tri3-manage-card b { font-size: 15px; color: var(--tri-text-title); }
+.tri3-manage-card span { font-size: 12px; color: var(--tri-text-caption); line-height: 1.6; }
+
+/* ================= 相册管理区（服务端渲染） ================= */
+.tri3-album-mgr {
+  background: var(--tri-surface);
+  border-radius: var(--tri-radius-md);
+  padding: 16px;
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--tri-text-title);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 2px 10px rgba(0, 0, 0, .04);
+}
+.tri3-album-mgr a { color: #3d5afe; text-decoration: none; }
+.tri3-album-mgr input[type=text], .tri3-album-mgr input:not([type]) {
+  border: 1px solid var(--tri-outline); border-radius: 10px; padding: 8px 12px;
+  font-size: 13px; font-family: inherit; box-sizing: border-box; background: var(--tri-surface); color: var(--tri-text-title);
+}
+.tri3-album-mgr .am-bread { font-size: 12.5px; color: var(--tri-text-caption); margin-bottom: 12px; }
+.tri3-album-mgr .am-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+.tri3-album-mgr .am-head b { font-size: 15px; display: inline-flex; align-items: center; gap: 6px; color: var(--tri-text-title); }
+.tri3-album-mgr .am-count { font-size: 12px; color: var(--tri-text-time); margin-left: 8px; }
+.tri3-album-mgr .am-btn {
+  display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--tri-outline);
+  background: var(--tri-surface); color: var(--tri-text-title); border-radius: 999px; padding: 6px 16px;
+  font-size: 12.5px; cursor: pointer; font-family: inherit; line-height: 1.6;
+  text-decoration: none;
+}
+.tri3-album-mgr .am-btn-primary { background: #3d5afe; border-color: #3d5afe; color: #fff; font-weight: 600; }
+.tri3-album-mgr .am-new { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tri3-album-mgr .am-new input:first-of-type { flex: 1; min-width: 180px; }
+.tri3-album-mgr .am-form { background: var(--tri-surface-variant); border-radius: var(--tri-radius-md); padding: 14px; margin-bottom: 14px; }
+.tri3-album-mgr .am-form label { display: block; font-size: 12.5px; color: var(--tri-text-desc); margin: 8px 0 4px; }
+.tri3-album-mgr .am-actions { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+.tri3-album-mgr .am-upload { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.tri3-album-mgr .am-upload input[type=file] { display: none; }
+.tri3-album-mgr .am-addlink { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tri3-album-mgr .am-addlink input:first-of-type { flex: 1; min-width: 200px; }
+.tri3-album-mgr .am-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.tri3-album-mgr .am-card { background: var(--tri-surface); border-radius: var(--tri-radius-md); overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 4px 14px rgba(0, 0, 0, .05); }
+.tri3-album-mgr .am-card-cover { height: 92px; background: linear-gradient(135deg, #e8eaff, #f4efff); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.tri3-album-mgr .am-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tri3-album-mgr .am-card-ph { font-size: 32px; color: #3d5afe; opacity: .4; }
+.tri3-album-mgr .am-card-num { position: absolute; right: 8px; bottom: 8px; background: rgba(0, 0, 0, .55); color: #fff; font-size: 11px; padding: 1px 9px; border-radius: 999px; }
+.tri3-album-mgr .am-card-body { padding: 10px 12px 12px; }
+.tri3-album-mgr .am-card-body b { font-size: 13.5px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--tri-text-title); }
+.tri3-album-mgr .am-card-body p { margin: 4px 0 0; font-size: 12px; color: var(--tri-text-caption); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tri3-album-mgr .am-card-ops { display: flex; justify-content: space-between; margin-top: 8px; }
+.tri3-album-mgr .am-card-ops a { color: #5b5d64; font-size: 15px; padding: 2px; }
+.tri3-album-mgr .am-card-ops a:last-child { color: #e5484d; }
+.tri3-album-mgr .am-manage { display: block; margin-top: 8px; text-align: center; background: rgba(61, 90, 254, .08); color: #3d5afe; border-radius: 999px; padding: 4px 0; font-size: 12px; font-weight: 600; }
+.tri3-album-mgr .am-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.tri3-album-mgr .am-photo { background: var(--tri-surface); border-radius: var(--tri-radius-sm); overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .04); }
+.tri3-album-mgr .am-photo-img { height: 84px; background: #f0f1f6; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.tri3-album-mgr .am-photo-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tri3-album-mgr .am-cover-tag { position: absolute; top: 5px; left: 5px; background: #3d5afe; color: #fff; font-size: 10px; padding: 0 7px; border-radius: 999px; }
+.tri3-album-mgr .am-photo-meta { font-size: 11.5px; color: var(--tri-text-desc); padding: 5px 8px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tri3-album-mgr .am-photo-ops { display: flex; justify-content: space-between; padding: 3px 8px 7px; }
+.tri3-album-mgr .am-photo-ops a { color: var(--tri-text-desc); font-size: 13px; padding: 1px; }
+.tri3-album-mgr .am-photo-ops a:last-child { color: #e5484d; }
+.tri3-album-mgr .am-empty { text-align: center; padding: 24px 10px; color: var(--tri-text-caption); font-size: 12.5px; }
+
+/* ================= 友链可视化编辑器 ================= */
+.tri3-friends-editor {
+  margin: 12px 0 2px;
+  padding: 14px;
+  background: var(--tri-surface-container-low);
+  border-radius: var(--tri-radius-md);
+}
+.tri3-friends-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  color: var(--tri-text-desc);
+}
+.tri3-friends-head .f-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--tri-primary);
+  color: var(--tri-on-primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: filter .15s ease, transform .15s ease;
+}
+.tri3-friends-head .f-add:hover { filter: brightness(1.07); transform: translateY(-1px); }
+.tri3-friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 2px;
+}
+.tri3-friend-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--tri-surface);
+  border-radius: 12px;
+  cursor: grab;
+  transition: box-shadow .16s ease, transform .16s ease;
+}
+.tri3-friend-card:hover { box-shadow: 0 2px 10px rgba(0, 0, 0, .07); }
+.tri3-friend-card.f-dragging { opacity: .5; transform: scale(.98); }
+.tri3-friend-card .f-grip { color: var(--tri-text-time); font-size: 16px; cursor: grab; }
+.tri3-friend-card .f-ava {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.tri3-friend-card .f-ava-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tri-primary-container);
+  color: var(--tri-on-primary-container);
+  font-size: 15px;
+  font-weight: 700;
+}
+.tri3-friend-card .f-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.tri3-friend-card .f-name-line {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--tri-text-title);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tri3-friend-card .f-name-line em {
+  font-style: normal;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--tri-on-primary-container);
+  background: var(--tri-primary-container);
+  padding: 1px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.tri3-friend-card .f-url-line {
+  font-size: 11.5px;
+  color: var(--tri-text-time);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tri3-friend-card .f-desc-line {
+  font-size: 12px;
+  color: var(--tri-text-desc);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tri3-friend-card .f-ops {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.tri3-friend-card .f-ops button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--tri-text-desc);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.tri3-friend-card .f-ops .f-edit:hover { background: var(--tri-primary-container); color: var(--tri-on-primary-container); }
+.tri3-friend-card .f-ops .f-del:hover { background: rgba(179, 38, 30, .12); color: #b3261e; }
+.tri3-friend-empty {
+  text-align: center;
+  padding: 26px 10px;
+  font-size: 12.5px;
+  color: var(--tri-text-caption);
+}
+/* 编辑弹窗 */
+.tri3-friend-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, .35);
+  display: grid;
+  place-items: center;
+  animation: tri3FadeIn .16s ease;
+}
+@keyframes tri3FadeIn { from { opacity: 0; } to { opacity: 1; } }
+.tri3-friend-modal-card {
+  width: min(400px, calc(100vw - 32px));
+  background: var(--tri-surface);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .22);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: tri3ModalUp .18s ease;
+}
+@keyframes tri3ModalUp { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+.tri3-friend-modal-head {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tri-text-title);
+  margin-bottom: 2px;
+}
+.tri3-friend-modal-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--tri-text-desc);
+}
+.tri3-friend-modal-card input[type=text] {
+  border: 1px solid var(--tri-outline);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--tri-text-title);
+  background: var(--tri-surface);
+  box-sizing: border-box;
+  width: 100%;
+}
+.tri3-friend-modal-card input[type=text]:focus { outline: none; border-color: var(--tri-primary); box-shadow: 0 0 0 3px rgba(103, 80, 164, .14); }
+.tri3-friend-modal-ops {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+.tri3-friend-modal-ops button {
+  border: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+.tri3-friend-modal-ops .f-cancel { background: var(--tri-surface-variant); color: var(--tri-text-desc); }
+.tri3-friend-modal-ops .f-ok { background: var(--tri-primary); color: var(--tri-on-primary); }
+
+/* ===== 配置备份面板（导出 / 导入 / 重置） ===== */
+.tri3-bak-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 6px 0 2px; grid-column: 1 / -1; }
+.tri3-bak-card { background: #f7f6fa; border: 1px solid #eceaf2; border-radius: 14px; padding: 16px; }
+.tri3-bak-card .tri3-bak-ico { font-size: 26px; color: var(--tri-primary, #6750a4); display: block; }
+.tri3-bak-card b { display: block; font-size: 14px; color: #1f1f23; margin: 10px 0 4px; }
+.tri3-bak-card p { font-size: 12px; color: #5b5d66; line-height: 1.6; margin: 0 0 12px; }
+.tri3-bak-card.is-danger { background: #fdf3f2; border-color: #f3d7d5; }
+.tri3-bak-card.is-danger .tri3-bak-ico,
+.tri3-bak-card.is-danger b { color: #b3261e; }
+.tri3-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--tri-primary, #6750a4); color: #fff !important; border: none; border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none !important; line-height: 1.4; }
+.tri3-btn:hover { filter: brightness(1.08); }
+.tri3-btn.is-danger { background: #b3261e; }
+.tri3-bak-file { position: relative; display: inline-block; border: 1px dashed #b9b2c4; border-radius: 10px; padding: 7px 12px; font-size: 12px; color: #5b5d66; cursor: pointer; }
+.tri3-bak-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+
+/* ===== 保存按钮固定底栏（MD3 风格，任何 Tab 下始终可见） ===== */
+.tri3-submit-bar {
+  position: sticky !important;
+  bottom: 14px !important;
+  z-index: 60 !important;
+  margin: 16px 0 20px !important;
+  padding: 10px 14px !important;
+  background: rgba(255,255,255,.88) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(0,0,0,.07) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,.12) !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  list-style: none !important;
+}
+.tri3-submit-bar .btn { margin: 0 !important; }
+.tri3-submit-bar .btn.primary {
+  background: var(--tri3-pri, #6750a4) !important;
+  border-radius: 999px !important;
+  padding: 8px 22px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(103,80,164,.35) !important;
+}
+
+
+/* ---- 颜色预设（横排在选色框后面） ---- */
+.tri3-form .tri3-section .typecho-option .tri3-color-presets {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+.tri3-form .tri3-section .typecho-option .tri3-color-presets .tri3-color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, .12);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  padding: 0;
+  background-clip: padding-box;
+}
+.tri3-form .tri3-section .typecho-option .tri3-color-presets .tri3-color-swatch:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+  border-color: var(--tri-primary, #6750a4);
+}
+.tri3-form .tri3-section .typecho-option .tri3-color-presets .tri3-color-swatch.active {
+  border-color: var(--tri-primary, #6750a4);
+  box-shadow: 0 0 0 2px rgba(103, 80, 164, .3);
+}

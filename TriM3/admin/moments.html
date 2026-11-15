@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>说说管理 · TriM3</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+<style>
+:root{
+  --primary:#3D5AFE; --primary-soft:rgba(61,90,254,.08);
+  --on-primary:#fff; --bg:#F4F5FA; --surface:#fff;
+  --text:#1B1C1E; --text-2:#5B5D64; --text-3:#93959E;
+  --line:rgba(27,28,30,.08); --danger:#E5484D; --warn:#F5A524;
+  --radius:14px; --radius-s:10px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:230px;flex:none;background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.side-logo{display:flex;align-items:center;gap:10px;padding:4px 8px 16px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.side-logo .logo{width:38px;height:38px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex:none}
+.side-logo b{font-size:15px;display:block;line-height:1.2}
+.side-logo span{font-size:11px;color:var(--text-3)}
+.side-nav{display:flex;flex-direction:column;gap:2px}
+.side-nav button{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;background:transparent;border-radius:var(--radius-s);font-size:14px;color:var(--text-2);cursor:pointer;text-align:left;font-family:inherit}
+.side-nav button:hover{background:var(--primary-soft);color:var(--primary)}
+.side-nav button.active{background:var(--primary-soft);color:var(--primary);font-weight:600}
+.side-nav button i{font-size:18px}
+.side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.side-foot a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-s);color:var(--text-2);text-decoration:none;font-size:13px}
+.side-foot a:hover{background:var(--primary-soft);color:var(--primary)}
+.main{flex:1;padding:26px 30px;min-width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.topbar h1{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar .count{font-size:12px;font-weight:400;color:var(--text-3);background:var(--surface);border:1px solid var(--line);padding:2px 10px;border-radius:999px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;background:var(--primary);color:var(--on-primary)}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+.btn-plain{background:var(--surface);color:var(--text-2);border:1px solid var(--line)}
+.btn-danger{background:rgba(229,72,77,.08);color:var(--danger);border:1px solid rgba(229,72,77,.25)}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:999px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.list-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.list-head .filters{display:flex;gap:8px;margin-left:auto;align-items:center}
+.bchk-wrap{display:inline-flex;align-items:center;flex:none;cursor:pointer;margin-top:2px}
+.bchk-wrap input,.bchk-all input{width:16px;height:16px;accent-color:var(--primary);cursor:pointer;margin:0}
+.bchk-all{display:inline-flex;align-items:center;cursor:pointer;padding:3px;border-radius:8px;transition:.15s}
+.bchk-all:hover{background:var(--primary-soft)}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px;font-size:12px;color:var(--text-2);cursor:pointer;font-family:inherit}
+.chip.active{background:var(--primary-soft);border-color:var(--primary);color:var(--primary);font-weight:600}
+.item{display:flex;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line);align-items:flex-start;transition:.15s}
+.item:last-child{border-bottom:0}
+.item:hover{background:rgba(0,0,0,.012)}
+.item .ico{width:40px;height:40px;flex:none;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px}
+.item .body{flex:1;min-width:0}
+.item .meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-3);margin-bottom:5px;flex-wrap:wrap}
+.item .meta .badge{font-size:10px;padding:1px 8px;border-radius:999px;background:rgba(61,90,254,.1);color:var(--primary)}
+.item .meta .badge.pri{background:rgba(245,165,36,.12);color:var(--warn)}
+.item .txt{color:var(--text);font-size:13.5px;white-space:pre-wrap;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.item .txt b{color:var(--primary)}
+.item .tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text-2);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.tag i{font-size:12px}
+.item .ops{display:flex;gap:6px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+.pager{display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border-top:1px solid var(--line)}
+.pager button{border:1px solid var(--line);background:var(--surface);border-radius:10px;min-width:34px;height:34px;cursor:pointer;font-family:inherit;font-size:13px;color:var(--text-2);display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.pager button:hover:not(:disabled){border-color:var(--primary);color:var(--primary)}
+.pager button.cur{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.pager button:disabled{opacity:.4;cursor:not-allowed}
+.pager .info{font-size:12px;color:var(--text-3);margin:0 6px}
+.empty{padding:60px 20px;text-align:center;color:var(--text-3)}
+.empty i{font-size:42px;display:block;margin-bottom:10px;opacity:.4}
+.empty .btn{margin-top:14px}
+.mask{position:fixed;inset:0;background:rgba(20,20,24,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px;backdrop-filter:blur(3px)}
+.dialog{background:var(--surface);border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.18);width:640px;max-width:100%;max-height:92vh;overflow:auto}
+.dialog-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
+.dialog-head b{font-size:15px}
+.dialog-head .x{border:0;background:transparent;font-size:20px;color:var(--text-3);cursor:pointer;padding:4px;line-height:1}
+.dialog-body{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.dialog-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--surface)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field-row{display:flex;gap:8px;align-items:center}
+.field-row .inp{flex:1}
+.field-row .btn{flex:none;white-space:nowrap}
+.field label{font-size:12px;font-weight:600;color:var(--text-2);display:flex;align-items:center;gap:6px}
+.field label .req{color:var(--danger)}
+.inp{border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13.5px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;transition:.15s;width:100%}
+.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+textarea.inp{resize:vertical;min-height:110px;line-height:1.7}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid .field:first-child{grid-column:1/-1}
+.checks{display:flex;gap:18px;align-items:center}
+.check{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text-2);cursor:pointer;user-select:none}
+.check input{accent-color:var(--primary);width:16px;height:16px}
+.toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%);background:#232428;color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;z-index:99;opacity:0;transition:.25s;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.toast.show{opacity:1}
+.media-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.media-bar button{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text-2);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;font-family:inherit;transition:.15s}
+.media-bar button:hover{background:var(--primary-soft);color:var(--primary);border-color:var(--primary)}
+.media-bar button i{font-size:14px}
+.pop-wrap{position:relative;display:inline-block}
+.pop{position:absolute;top:calc(100% + 8px);left:0;z-index:60;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 32px rgba(0,0,0,.16);padding:14px;width:290px;flex-direction:column;gap:10px;display:none;animation:popIn .16s ease}
+.pop.show{display:flex}
+@keyframes popIn{from{opacity:0;transform:translateY(-5px) scale(.97)}to{opacity:1;transform:none}}
+.pop .pop-title{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.pop .pop-title i{color:var(--primary)}
+.pop .pop-row{display:flex;gap:8px;align-items:center}
+.pop label{font-size:11px;color:var(--text-3);flex:none}
+.pop .inp{padding:8px 12px;font-size:13px;border-radius:10px}
+.pop .btn{padding:7px 14px;font-size:12px}
+.pop .pop-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:2px}
+/* --- 表情面板（后台） --- */
+.tri-say-emojis{position:fixed;z-index:10001;width:min(480px,calc(100vw - 24px));max-height:300px;overflow-y:auto;border-radius:16px;background:#F7F8FC;border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.22);opacity:0;transform:scale(.94);transition:opacity .16s ease,transform .16s ease;pointer-events:none}
+.tri-say-emojis.is-open{opacity:1;transform:scale(1);pointer-events:auto}
+.tri-say-emojis[hidden]{display:none}
+.tri-say-emoji-tabs{display:flex;gap:4px;padding:8px 8px 0}
+.tri-say-emoji-tab{border:0;background:transparent;padding:5px 12px;font-size:12px;border-radius:999px;color:var(--text-2);cursor:pointer;font-family:inherit;transition:.2s}
+.tri-say-emoji-tab.is-active{background:var(--primary-soft);color:var(--primary);font-weight:600}
+.tri-say-emoji-body{padding:8px;max-height:180px;overflow-y:auto}
+.tri-say-emoji-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:2px}
+.tri-say-emoji{display:flex;align-items:center;justify-content:center;height:32px;font-size:18px;border-radius:8px;cursor:pointer;transition:.15s}
+.tri-say-emoji:hover{background:rgba(0,0,0,.06);transform:scale(1.12)}
+.tri-say-emoji-grid.tri-say-emoji-imgs{grid-template-columns:repeat(6,1fr)}
+.tri-say-emoji-imgs .tri-say-emoji{height:38px}
+.tri-say-emoji-imgs .tri-say-emoji img{width:26px;height:26px;object-fit:contain}
+
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.login-card{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:44px 46px;text-align:center;max-width:400px;width:100%}
+.login-card .big{width:64px;height:64px;border-radius:20px;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:16px}
+.login-card h2{margin-bottom:8px}
+.login-card p{color:var(--text-2);font-size:13px;margin-bottom:22px}
+@media(max-width:860px){
+  .sidebar{width:64px;padding:16px 8px}
+  .side-logo{justify-content:center;padding:4px 0 14px}
+  .side-logo .txt{display:none}
+  .side-nav button span{display:none}
+  .side-nav button{justify-content:center}
+  .side-foot a span{display:none}
+  .side-foot a{justify-content:center}
+  .main{padding:18px 14px}
+  .grid{grid-template-columns:1fr}
+  .item{flex-direction:column}
+  .item .ops{justify-content:flex-start}
+}
+
+/* ---------- 图床多图上传列表 ---------- */
+.tri-upload-list{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
+.tri-upload-item{position:relative;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:12px;overflow:hidden;background:rgba(128,128,128,.12);cursor:pointer;flex:0 0 auto;transition:transform .15s ease,box-shadow .15s ease}
+.tri-upload-item img{width:100%;height:100%;object-fit:cover;display:block}
+.tri-upload-item:hover{transform:scale(1.06);box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.tri-upload-item .tri-upload-del{position:absolute;top:2px;right:2px;font-size:15px;color:#fff;background:rgba(0,0,0,.55);border-radius:50%;padding:1px;opacity:0;transition:opacity .15s ease}
+.tri-upload-item:hover .tri-upload-del{opacity:1}
+.tri-upload-item .tri-upload-spin{font-size:18px;color:#6750a4;animation:triUpRot 1s linear infinite}
+@keyframes triUpRot{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script src="../assets/js/tri-msg.js?v=1.2.5"></script>
+<script>
+var API = '../api/moment-api.php';
+/* 站点根（兼容子目录安装）：/usr/themes/TriM3/admin/moments.html -> '' 或 '/blog' */
+var SITE_ROOT = (function () {
+  var p = window.location.pathname;
+  var i = p.indexOf('/usr/themes/');
+  return i > 0 ? p.substring(0, i) : '';
+})();
+/* 图床上传：后台配置了图床 API 才显示「上传图片」按钮（album-api.php 上传，图床/本机自适应） */
+var TRI_ADM_UP = { enabled: false };
+function admUpApi() { return SITE_ROOT + '/usr/themes/TriM3/api/album-api.php?do=upload'; }
+/* 实况图片本地上传：上传成功后把 URL 填入目标输入框 */
+function adminLiveUpload(inputId) {
+  if (!TRI_ADM_UP.enabled) { toast('后台未配置图床 API'); return; }
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*';
+  inp.onchange = function () {
+    inp.remove();
+    var f = (inp.files || [])[0];
+    if (!f) { return; }
+    var fd = new FormData();
+    fd.append('file', f);
+    toast('上传中…');
+    fetch(admUpApi(), { method: 'POST', body: fd, credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) {
+          var url = (j.urls && j.urls[0]) || j.url;
+          var el = document.getElementById(inputId);
+          if (el && url) { el.value = url; toast('已填入实况图片'); }
+          else if (url) { toast('上传成功'); }
+          else { toast('上传失败'); }
+        } else {
+          toast((j && j.msg) || '上传失败');
+        }
+      })
+      .catch(function () { toast('上传失败，请检查图床配置'); });
+  };
+  document.body.appendChild(inp);
+  inp.click();
+}
+
+/* 后台实况视频一键上传：选视频 → 本地抽首帧 → 分别上传封面与视频 → 自动填入 */
+function adminLiveVideo(imgId, vidId) {
+  if (!TRI_ADM_UP.enabled) { toast('后台未配置图床 API'); return; }
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'video/*,.mov,.mp4,.m4v,.3gp';
+  inp.onchange = function () {
+    inp.remove();
+    var f = (inp.files || [])[0];
+    if (!f) { return; }
+    toast('正在解析视频关键帧…');
+    var url = URL.createObjectURL(f);
+    var v = document.createElement('video');
+    v.muted = true;
+    v.playsInline = true;
+    v.preload = 'metadata';
+    v.onerror = function () {
+      URL.revokeObjectURL(url);
+      toast('无法解析该视频：实况照片请先在手机相册导出为视频（.mov/.mp4）再上传');
+    };
+    v.onloadedmetadata = function () {
+      try { v.currentTime = Math.min(0.3, (v.duration || 1) * 0.1 || 0.1); }
+      catch (err) { URL.revokeObjectURL(url); toast('无法解析该视频，请直接填写 URL'); }
+    };
+    v.onseeked = function () {
+      try {
+        var c = document.createElement('canvas');
+        c.width = v.videoWidth || 1280;
+        c.height = v.videoHeight || 720;
+        c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+        c.toBlob(function (blob) {
+          URL.revokeObjectURL(url);
+          if (!blob) { toast('关键帧提取失败，请直接填写图片 URL'); return; }
+          adminUploadLivePair(blob, f, imgId, vidId);
+        }, 'image/jpeg', 0.82);
+      } catch (err) {
+        URL.revokeObjectURL(url);
+        toast('关键帧提取失败，请直接填写 URL');
+      }
+    };
+    v.src = url;
+    v.load();
+  };
+  document.body.appendChild(inp);
+  inp.click();
+}
+
+/* 后台上传实况封面 + 视频（串行） */
+function adminUploadLivePair(coverBlob, videoFile, imgId, vidId) {
+  var up = function (fd, cb) {
+    fetch(admUpApi(), { method: 'POST', body: fd, credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok) { cb((j.urls && j.urls[0]) || j.url, null); }
+        else { cb(null, (j && j.msg) || '上传失败'); }
+      })
+      .catch(function () { cb(null, '上传失败，请检查图床配置'); });
+  };
+  var fd1 = new FormData();
+  fd1.append('file', coverBlob, 'live-cover.jpg');
+  toast('上传封面…');
+  up(fd1, function (imgUrl, err) {
+    if (err || !imgUrl) { toast(err || '上传失败'); return; }
+    var elImg = document.getElementById(imgId);
+    if (elImg) { elImg.value = imgUrl; }
+    var fd2 = new FormData();
+    fd2.append('file', videoFile);
+    toast('上传视频…');
+    up(fd2, function (vidUrl, err2) {
+      if (err2 || !vidUrl) { toast(err2 || '上传失败'); return; }
+      var elVid = document.getElementById(vidId);
+      if (elVid) { elVid.value = vidUrl; }
+      toast('实况已就绪：关键帧 + 视频已自动填入');
+    });
+  });
+}
+
+function loadUploadCfg() {
+  fetch(SITE_ROOT + '/usr/themes/TriM3/api/album-api.php?do=get_settings', { credentials: 'same-origin' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) { if (j && j.ok && j.settings) { TRI_ADM_UP.enabled = !!j.settings.upload_enabled; } })
+    .catch(function () {});
+}
+function adminUpload(btn) {
+  if (!TRI_ADM_UP.enabled) { toast('后台未配置图床 API'); return; }
+  var box = null;
+  function ensureBox() {
+    if (!box || !box.isConnected) {
+      box = document.createElement('div');
+      box.className = 'tri-upload-list';
+      if (btn.isConnected) { btn.parentNode.insertBefore(box, btn.nextSibling); }
+      else { document.body.appendChild(box); }
+    }
+    return box;
+  }
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*';
+  inp.multiple = true;
+  inp.onchange = function () {
+    inp.remove();
+    var files = Array.prototype.slice.call(inp.files || []);
+    if (!files.length) { return; }
+    ensureBox();
+    var i = 0;
+    (function next() {
+      if (i >= files.length) { return; }
+      var f = files[i];
+      var idx = i + 1;
+      i += 1;
+      var fd = new FormData();
+      fd.append('file', f);
+      var it = document.createElement('span');
+      it.className = 'tri-upload-item';
+      it.innerHTML = '<i class="ri-loader-4-line tri-upload-spin"></i>';
+      it.title = f.name;
+      box.appendChild(it);
+      toast('上传中 ' + idx + '/' + files.length);
+      fetch(admUpApi(), { method: 'POST', body: fd, credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j && j.ok) {
+            var url = (j.urls && j.urls[idx - 1]) || j.url;
+            it.innerHTML = '<img src="' + esc(url) + '" alt=""><i class="ri-close-circle-fill tri-upload-del"></i>';
+            it.className = 'tri-upload-item is-done';
+            it.addEventListener('click', function (ev) {
+              if (ev.target.closest('.tri-upload-del')) { it.remove(); return; }
+              var ta = document.getElementById('f-content');
+              if (ta) {
+                insertAtCursor(ta, '[img]' + url + '[/img]');
+                toast('已插入编辑器');
+              }
+            });
+          } else {
+            it.remove();
+            toast((j && j.msg) || '上传失败');
+          }
+          next();
+        })
+        .catch(function () { it.remove(); toast('上传失败，请检查图床配置'); next(); });
+    })();
+  };
+  document.body.appendChild(inp);
+  inp.click();
+}
+var state = { page: 1, total: 0, pages: 1, per: 10, admin: false, filter: 'all', cat: '' };
+var ADM_CATS = [];
+function loadCats(cb) {
+  post({ do: 'cats' }, function (j) {
+    if (j && j.ok) { ADM_CATS = j.list || []; }
+    cb && cb();
+  });
+}
+function catOptions(selected) {
+  var opts = '<option value="">未分类</option>';
+  ADM_CATS.forEach(function (c) {
+    opts += '<option value="' + esc(c.slug) + '"' + (c.slug === selected ? ' selected' : '') + '>' + esc(c.name) + (c.count ? '（' + c.count + '）' : '') + '</option>';
+  });
+  return opts;
+}
+var $ = function (s, r) { return (r || document).querySelector(s); };
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function toast(msg) {
+  /* 统一消息中心 */
+  if (window.TriMsg) { window.TriMsg.show(msg); return; }
+  var t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(function () { t.classList.remove('show'); }, 2200);
+}
+function post(data, cb) {
+  var body = Object.keys(data).map(function (k) {
+    return encodeURIComponent(k) + '=' + encodeURIComponent(data[k] == null ? '' : data[k]);
+  }).join('&');
+  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body, credentials: 'same-origin' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) { cb && cb(j); })
+    .catch(function () { toast('网络错误'); });
+}
+
+/* ---------- 渲染 ---------- */
+function render() {
+  var app = $('#app');
+  if (!state.admin) {
+    app.innerHTML =
+      '<div class="login-wrap"><div class="login-card">' +
+      '<span class="big"><i class="ri-lock-2-line"></i></span>' +
+      '<h2>需要管理员登录</h2><p>请先登录 Typecho 后台，再访问说说管理页。</p>' +
+      '<a class="btn" href="' + SITE_ROOT + '/admin/login.php"><i class="ri-login-box-line"></i>前往登录</a>' +
+      '</div></div>';
+    return;
+  }
+  var items = state.list || [];
+  var head = '';
+  var tagHtml = function (it) {
+    var t = [];
+    if (it.ga && it.ga.length) t.push('<span class="tag"><i class="ri-image-line"></i>' + it.ga.length + '</span>');
+    if (it.music) t.push('<span class="tag"><i class="ri-music-2-line"></i></span>');
+    if (it.video) t.push('<span class="tag"><i class="ri-video-line"></i></span>');
+    if (it.live) t.push('<span class="tag"><i class="ri-video-line"></i>实况</span>');
+    return t.join('');
+  };
+  var cards = items.map(function (it) {
+    var badge = '';
+    if (it.sticky) badge += '<span class="badge"><i class="ri-pushpin-2-fill"></i>置顶</span>';
+    if (it.isPrivate) badge += '<span class="badge pri"><i class="ri-lock-line"></i>私密</span>';
+    return (
+      '<div class="item">' +
+      '<label class="bchk-wrap" title="选择" onclick="event.stopPropagation()"><input type="checkbox" class="bchk" value="' + it.cid + '" onchange="refreshBatch()"></label>' +
+      '<span class="ico"><i class="ri-quill-pen-line"></i></span>' +
+      '<div class="body">' +
+      '<div class="meta"><span>' + esc(it.date || '') + '</span>' + badge +
+      (it.cmt != null ? '<span>评论 ' + it.cmt + '</span>' : '') +
+      '<span>赞 ' + it.like + '</span></div>' +
+      '<div class="txt">' + esc(it.text).replace(/\n/g, '<br>') + '</div>' +
+      '<div class="tags">' + tagHtml(it) + '</div>' +
+      '</div>' +
+      '<div class="ops">' +
+      '<button class="btn btn-plain btn-sm" onclick="openEdit(' + it.cid + ')"><i class="ri-edit-line"></i>编辑</button>' +
+      '<button class="btn btn-plain btn-sm" onclick="toggleStick(' + it.cid + ')"><i class="ri-pushpin-2-line"></i>' + (it.sticky ? '取消置顶' : '置顶') + '</button>' +
+      '<button class="btn btn-danger btn-sm" onclick="del(' + it.cid + ')"><i class="ri-delete-bin-line"></i>删除</button>' +
+      '</div></div>'
+    );
+  }).join('');
+  var pager = '';
+  if (state.pages > 1) {
+    var btns = '';
+    for (var p = 1; p <= state.pages; p++) {
+      if (p === 1 || p === state.pages || Math.abs(p - state.page) <= 2) {
+        btns += '<button class="' + (p === state.page ? 'cur' : '') + '" onclick="go(' + p + ')">' + p + '</button>';
+        if (p < state.pages && p + 1 < state.pages && Math.abs(p + 1 - state.page) > 2 && p + 1 !== state.pages - 1) btns += '<button disabled>…</button>';
+      }
+    }
+    pager =
+      '<div class="pager">' +
+      '<button onclick="go(' + (state.page - 1) + ')" ' + (state.page <= 1 ? 'disabled' : '') + '><i class="ri-arrow-left-s-line"></i></button>' +
+      btns +
+      '<button onclick="go(' + (state.page + 1) + ')" ' + (state.page >= state.pages ? 'disabled' : '') + '><i class="ri-arrow-right-s-line"></i></button>' +
+      '<span class="info">共 ' + state.total + ' 条 · 第 ' + state.page + '/' + state.pages + ' 页</span>' +
+      '</div>';
+  }
+  app.innerHTML =
+    '<div class="layout">' +
+    '<aside class="sidebar">' +
+    '<div class="side-logo"><span class="logo"><i class="ri-quill-pen-fill"></i></span><span class="txt"><b>说说管理</b><span>TriM3 后台</span></span></div>' +
+    '<nav class="side-nav">' +
+    '<button class="active"><i class="ri-file-list-3-line"></i><span>说说列表</span></button>' +
+    '<button onclick="openAdd()"><i class="ri-add-circle-line"></i><span>发布说说</span></button>' +
+    '</nav>' +
+    '<div class="side-foot">' +
+    '<a href="' + SITE_ROOT + '/index.php/moment.html" target="_blank"><i class="ri-eye-line"></i><span>查看前台</span></a>' +
+    '<a href="' + SITE_ROOT + '/admin/" target="_blank"><i class="ri-dashboard-line"></i><span>Typecho 后台</span></a>' +
+    '</div></aside>' +
+    '<main class="main">' +
+    '<div class="topbar"><h1><i class="ri-quill-pen-line"></i>说说管理 <span class="count">共 ' + state.total + ' 条</span></h1>' +
+    '<div style="display:flex;gap:8px">' +
+    '<button class="btn btn-ghost" onclick="openCats()"><i class="ri-price-tag-3-line"></i>分类管理</button>' +
+    '<button class="btn" onclick="openAdd()"><i class="ri-add-line"></i>发布说说</button></div></div>' +
+    '<div class="panel">' +
+    '<div class="list-head">' +
+    '<label class="bchk-all" title="全选"><input type="checkbox" onchange="toggleAll(this)"></label>' +
+    '<button class="btn btn-danger btn-sm" id="btn-batch" onclick="batchDel()" disabled><i class="ri-delete-bin-line"></i>批量删除</button>' +
+    '<span style="font-weight:600;font-size:13px">全部说说</span>' +
+    '<div class="filters">' +
+    '<button class="chip' + (state.filter === 'all' ? ' active' : '') + '" onclick="setFilter(\'all\')">全部</button>' +
+    '<button class="chip' + (state.filter === 'sticky' ? ' active' : '') + '" onclick="setFilter(\'sticky\')">置顶</button>' +
+    '<button class="chip' + (state.filter === 'private' ? ' active' : '') + '" onclick="setFilter(\'private\')">私密</button>' +
+    '<select class="chip" style="cursor:pointer;padding:5px 10px" onchange="setCat(this.value)" title="按分类筛选">' +
+    '<option value="">全部分类</option>' +
+    ADM_CATS.map(function (c) { return '<option value="' + esc(c.slug) + '"' + (state.cat === c.slug ? ' selected' : '') + '>' + esc(c.name) + '（' + c.count + '）</option>'; }).join('') +
+    '</select></div></div>' +
+    (cards || '<div class="empty"><i class="ri-inbox-line"></i>还没有说说' +
+      '<div><button class="btn" onclick="openAdd()">发布第一条</button></div></div>') +
+    pager +
+    '</div></main></div>';
+  refreshBatch();
+}
+
+/* ---------- 批量删除 ---------- */
+function refreshBatch() {
+  var boxes = document.querySelectorAll('.bchk');
+  var n = 0;
+  Array.prototype.forEach.call(boxes, function (b) { if (b.checked) n++; });
+  var btn = document.getElementById('btn-batch');
+  if (btn) { btn.disabled = n === 0; }
+  var all = document.querySelector('.bchk-all input');
+  if (all) { all.checked = n > 0 && n === boxes.length; }
+}
+function toggleAll(ck) {
+  var boxes = document.querySelectorAll('.bchk');
+  Array.prototype.forEach.call(boxes, function (b) { b.checked = !!ck.checked; });
+  refreshBatch();
+}
+function batchDel() {
+  var boxes = document.querySelectorAll('.bchk:checked');
+  var ids = [];
+  Array.prototype.forEach.call(boxes, function (b) { ids.push(parseInt(b.value, 10)); });
+  if (!ids.length) { return; }
+  if (!window.confirm('确定删除选中的 ' + ids.length + ' 条说说？此操作不可恢复。')) { return; }
+  post({ do: 'batch_del', cids: ids.join(',') }, function (j) {
+    toast(j.ok ? '已删除 ' + (j.count || ids.length) + ' 条' : (j.msg || '删除失败'));
+    load(state.page);
+  });
+}
+
+/* ---------- 数据 ---------- */
+function load(page) {
+  state.page = page || 1;
+  post({ do: 'list', page: state.page, filter: state.filter, cat: state.cat, per: state.per }, function (j) {
+    if (!j || !j.ok) { toast((j && j.msg) || '加载失败'); return; }
+    state.admin = !!j.admin;
+    state.list = j.list || [];
+    state.total = j.total || 0;
+    state.pages = Math.max(1, Math.ceil(state.total / state.per));
+    if (state.page > state.pages) state.page = state.pages;
+    render();
+  });
+}
+function go(p) { if (p >= 1 && p <= state.pages) load(p); }
+function setFilter(f) { state.filter = f; load(1); }
+function setCat(c) { state.cat = c; load(1); }
+function del(cid) {
+  if (!window.confirm('确定删除这条说说？此操作不可恢复。')) { return; }
+  post({ do: 'del', cid: cid }, function (j) { toast(j.ok ? '已删除' : (j.msg || '删除失败')); load(state.page); });
+}
+function toggleStick(cid) {
+  post({ do: 'sticky', cid: cid }, function (j) { if (j.ok) { toast('已更新'); load(state.page); } else { toast(j.msg || '操作失败'); } });
+}
+
+var TRI_EMOJI_GROUPS = [
+    { name: 'Emoji', list: ['😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊','😋','😎','😍','🥰','😘','😜','🤪','🤔','🤗','🤭','🤫','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🥵','🥶','😭','😢','😤','😡','🤬','🤯','😳','🥺','😱','😰','😓','🤝','👍','👎','👌','✌️','🤞','🤟','👏','🙏','💪','🤳','👀','🧠','❤️','💔','💕','🔥','✨','🎉','🎂','🎁','⭐','🌙','☀️','🌈','🍀','🎵'] },
+    { name: '经典表情', list: ['/微笑','/大笑','/呲牙','/调皮','/可爱','/害羞','/亲亲','/流泪','/大哭','/难过','/困','/惊讶','/酷','/汗','/抓狂','/吐','/鄙视','/奋斗','/鼓掌','/示爱','/得意','/衰'] },
+    { name: '哔哩哔哩', type: 'img', list: [
+      { t: '[doge]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/doge.gif' },
+      { t: '[亲亲]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/亲亲.gif' },
+      { t: '[偷笑]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/偷笑.gif' },
+      { t: '[再见]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/再见.gif' },
+      { t: '[发怒]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/发怒.gif' },
+      { t: '[发财]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/发财.gif' },
+      { t: '[可爱]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/可爱.gif' },
+      { t: '[吐血]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/吐血.gif' },
+      { t: '[呆]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/呆.gif' },
+      { t: '[呕吐]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/呕吐.gif' },
+      { t: '[困]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/困.gif' },
+      { t: '[坏笑]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/坏笑.gif' },
+      { t: '[大佬]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/大佬.gif' },
+      { t: '[大哭]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/大哭.gif' },
+      { t: '[委屈]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/委屈.gif' },
+      { t: '[害羞]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/害羞.gif' },
+      { t: '[尴尬]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/尴尬.gif' },
+      { t: '[微笑]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/微笑.gif' },
+      { t: '[思考]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/思考.gif' },
+      { t: '[惊吓]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/惊吓.gif' },
+      { t: '[打脸]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/打脸.gif' },
+      { t: '[抓狂]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/抓狂.gif' },
+      { t: '[抠鼻子]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/抠鼻子.gif' },
+      { t: '[斜眼笑]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/斜眼笑.gif' },
+      { t: '[无奈]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/无奈.gif' },
+      { t: '[晕]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/晕.gif' },
+      { t: '[流汗]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/流汗.gif' },
+      { t: '[流鼻血]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/流鼻血.gif' },
+      { t: '[点赞]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/点赞.gif' },
+      { t: '[生气]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/生气.gif' },
+      { t: '[生病]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/生病.gif' },
+      { t: '[疑问]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/疑问.gif' },
+      { t: '[白眼]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/白眼.gif' },
+      { t: '[睡着]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/睡着.gif' },
+      { t: '[笑哭]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/笑哭.gif' },
+      { t: '[腼腆]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/腼腆.gif' },
+      { t: '[色]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/色.gif' },
+      { t: '[调皮]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/调皮.gif' },
+      { t: '[鄙视]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/鄙视.gif' },
+      { t: '[闭嘴]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/闭嘴.gif' },
+      { t: '[难过]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/难过.gif' },
+      { t: '[馋]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/馋.gif' },
+      { t: '[黑人问号]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/黑人问号.gif' },
+      { t: '[鼓掌]', u: 'https://gcore.jsdelivr.net/npm/emotiono@1.0.0/bilibili/鼓掌.gif' }
+    ] },
+    { name: '微博表情', type: 'img', list: [
+      { t: '[滑稽]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/huaji.png' },
+      { t: '[捂脸]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/wuzuixiao.png' },
+      { t: '[笑哭]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/xiaoku.png' },
+      { t: '[微笑]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/xiaoyan.png' },
+      { t: '[开心]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/taikaixin.png' },
+      { t: '[太开心]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/haha.png' },
+      { t: '[泪]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/lei.png' },
+      { t: '[生气]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/nu.png' },
+      { t: '[惊讶]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/jingya.png' },
+      { t: '[疑问]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/yiwen.png' },
+      { t: '[黑线]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/heixian.png' },
+      { t: '[汗]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/han.png' },
+      { t: '[害羞]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/xiaohonglian.png' },
+      { t: '[委屈]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/weiqu.png' },
+      { t: '[无奈]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/mianqiang.png' },
+      { t: '[二哈]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/what.png' },
+      { t: '[坏笑]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/hehe.png' },
+      { t: '[抠鼻]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/bishi.png' },
+      { t: '[喷]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/pen.png' },
+      { t: '[吐]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/tu.png' },
+      { t: '[阴险]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/yinxian.png' },
+      { t: '[惊哭]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/jingku.png' },
+      { t: '[OK]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/ok.png' },
+      { t: '[点赞]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/damuzhi.png' },
+      { t: '[鼓掌]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/zhenbang.png' },
+      { t: '[胜利]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/shengli.png' },
+      { t: '[睡觉]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/shuijiao.png' },
+      { t: '[玫瑰]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/meigui.png' },
+      { t: '[爱心]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/aixin.png' },
+      { t: '[蛋糕]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/dangao.png' },
+      { t: '[礼物]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/liwu.png' },
+      { t: '[彩虹]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/caihong.png' },
+      { t: '[太阳]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/taiyang.png' },
+      { t: '[音乐]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/yinyue.png' },
+      { t: '[星星月亮]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/xingxingyueliang.png' },
+      { t: '[赞]', u: 'https://gcore.jsdelivr.net/gh/cdn-x/emoticons@3.1/tieba/a.png' }
+    ] }
+  ];
+  var TRI_QQ_EMOJI = { '/微笑':'🙂','/大笑':'😄','/呲牙':'😁','/调皮':'😜','/可爱':'🥰','/害羞':'😊','/亲亲':'😘','/流泪':'😭','/大哭':'😢','/难过':'😞','/困':'😪','/惊讶':'😲','/酷':'😎','/汗':'😓','/抓狂':'🤯','/吐':'🤮','/鄙视':'🙄','/奋斗':'💪','/鼓掌':'👏','/示爱':'💕','/得意':'😏','/衰':'🥶' };
+
+/* 后台表情面板：绑定 btn -> textarea */
+var ADM_EMOJI_BOUND = false;
+function removeEmojiPanel() {
+  var old = document.getElementById('adm-emojis');
+  if (old) { old.remove(); }
+}
+function bindAdminEmoji(btn, taId) {
+  if (!btn) { return; }
+  removeEmojiPanel();
+  var holder = document.createElement('div');
+  holder.innerHTML =
+    '<div class="tri-say-emojis" id="adm-emojis" hidden>' +
+    '<div class="tri-say-emoji-tabs">' +
+    '<button type="button" class="tri-say-emoji-tab is-active" data-g="0">Emoji</button>' +
+    '<button type="button" class="tri-say-emoji-tab" data-g="1">经典表情</button>' +
+    '<button type="button" class="tri-say-emoji-tab" data-g="2">哔哩哔哩</button>' +
+    '<button type="button" class="tri-say-emoji-tab" data-g="3">微博</button>' +
+    '</div><div class="tri-say-emoji-body"><div class="tri-say-emoji-grid" id="adm-emoji-grid"></div></div></div>';
+  var box = holder.firstChild;
+  document.body.appendChild(box);
+  var grid = document.getElementById('adm-emoji-grid');
+  var cur = 0;
+  function render(g) {
+    cur = g;
+    var grp = TRI_EMOJI_GROUPS[g];
+    grid.innerHTML = '';
+    grid.className = 'tri-say-emoji-grid' + (grp.type === 'img' ? ' tri-say-emoji-imgs' : '');
+    grp.list.forEach(function (em) {
+      var sp = document.createElement('span');
+      sp.className = 'tri-say-emoji';
+      if (grp.type === 'img') {
+        var im = document.createElement('img');
+        im.src = em.u; im.alt = em.t; im.loading = 'lazy';
+        sp.appendChild(im); sp.title = em.t;
+        sp.addEventListener('click', function (e) { e.stopPropagation(); ins(em.t); });
+      } else if (g === 1) {
+        sp.textContent = TRI_QQ_EMOJI[em] || em; sp.title = em;
+        sp.addEventListener('click', function (e) { e.stopPropagation(); ins(em); });
+      } else {
+        sp.textContent = em; sp.title = em;
+        sp.addEventListener('click', function (e) { e.stopPropagation(); ins(em); });
+      }
+      grid.appendChild(sp);
+    });
+  }
+  function ins(txt) {
+    var ta = document.getElementById(taId);
+    if (!ta) { return; }
+    var st = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
+    var en = ta.selectionEnd != null ? ta.selectionEnd : ta.value.length;
+    ta.value = ta.value.slice(0, st) + txt + ta.value.slice(en);
+    var np = st + txt.length;
+    ta.selectionStart = ta.selectionEnd = np;
+    ta.focus();
+  }
+  box.querySelectorAll('.tri-say-emoji-tab').forEach(function (t) {
+    t.addEventListener('click', function (e) {
+      e.stopPropagation();
+      box.querySelectorAll('.tri-say-emoji-tab').forEach(function (x) { x.classList.remove('is-active'); });
+      t.classList.add('is-active');
+      render(parseInt(t.getAttribute('data-g'), 10) || 0);
+    });
+  });
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (!box.hidden) {
+      box.hidden = true; box.classList.remove('is-open'); btn.classList.remove('is-active');
+      return;
+    }
+    box.hidden = false;
+    var r = btn.getBoundingClientRect();
+    var pw = box.offsetWidth, ph = box.offsetHeight;
+    var left = Math.max(8, Math.min(r.left, window.innerWidth - pw - 8));
+    var top, origin;
+    if (r.top - ph - 8 >= 8) { top = r.top - ph - 8; origin = (r.left < window.innerWidth / 2 ? 'bottom left' : 'bottom right'); }
+    else { top = r.bottom + 8; origin = (r.left < window.innerWidth / 2 ? 'top left' : 'top right'); }
+    box.style.left = left + 'px';
+    box.style.top = top + 'px';
+    box.style.transformOrigin = origin;
+    btn.classList.add('is-active');
+    if (grid.children.length === 0) { render(cur); }
+    requestAnimationFrame(function () { requestAnimationFrame(function () { box.classList.add('is-open'); }); });
+  });
+  if (!ADM_EMOJI_BOUND) {
+    ADM_EMOJI_BOUND = true;
+    document.addEventListener('click', function (e) {
+      var b = document.getElementById('adm-emojis');
+      if (!b || b.hidden) { return; }
+      if (b.contains(e.target) || (e.target.closest && e.target.closest('#f-emoji-toggle'))) { return; }
+      b.hidden = true;
+      b.classList.remove('is-open');
+      var t = document.getElementById('f-emoji-toggle');
+      if (t) { t.classList.remove('is-active'); }
+    });
+  }
+  render(cur);
+}
+
+/* ---------- 新增 / 编辑 ---------- */
+function formHtml(mode, d) {
+  d = d || {};
+  var ga = (d.ga || []).join('\n');
+  return (
+    '<div class="mask" onclick="if(event.target===this)closeDlg()">' +
+    '<div class="dialog" role="dialog">' +
+    '<div class="dialog-head"><b><i class="ri-' + (mode === 'add' ? 'add-circle' : 'edit') + '-line"></i> ' + (mode === 'add' ? '发布说说' : '编辑说说') + '</b>' +
+    '<button class="x" onclick="closeDlg()"><i class="ri-close-line"></i></button></div>' +
+    '<div class="dialog-body">' +
+    '<div class="field"><label>内容 <span class="req">*</span></label>' +
+    '<textarea class="inp" id="f-content" placeholder="支持 [img]图片URL[/img] [music]平台|ID|标题|歌手|封面[/music] [video]视频|封面[/video] [live]图片|视频[/live] 混排">' + esc(d.text || '') + '</textarea>' +
+    '<div class="media-bar">' +
+    '<span class="pop-wrap"><button type="button" onclick="openPop(this,\'img\')"><i class="ri-image-add-line"></i>插入图片</button>' +
+    '<div class="pop" id="pop-img"><div class="pop-title"><i class="ri-image-add-line"></i>插入图片到光标处</div>' +
+    '<div class="pop-row"><label>URL</label><input class="inp" id="pop-img-url" placeholder="https://..."></div>' +
+    '<div class="pop-foot"><button class="btn btn-plain btn-sm" onclick="closePop()">取消</button><button class="btn btn-sm" onclick="insertTag(\'img\')">插入</button></div></div></span>' +
+    '<span class="pop-wrap"><button type="button" onclick="openPop(this,\'music\')"><i class="ri-music-2-line"></i>插入音乐</button>' +
+    '<div class="pop" id="pop-music"><div class="pop-title"><i class="ri-music-2-line"></i>插入音乐到光标处</div>' +
+    '<div class="pop-row"><label>平台</label><select class="inp" id="pop-mu-server"><option value="netease">网易云</option><option value="tencent">QQ 音乐</option></select></div>' +
+    '<div class="pop-row"><label>ID</label><input class="inp" id="pop-mu-id" placeholder="歌曲ID / songmid / 分享链接"></div>' +
+    '<div class="pop-foot"><button class="btn btn-plain btn-sm" onclick="closePop()">取消</button><button class="btn btn-sm" onclick="insertTag(\'music\')">插入</button></div></div></span>' +
+    '<span class="pop-wrap"><button type="button" onclick="openPop(this,\'video\')"><i class="ri-video-add-line"></i>插入视频</button>' +
+    '<div class="pop" id="pop-video"><div class="pop-title"><i class="ri-video-add-line"></i>插入视频到光标处</div>' +
+    '<div class="pop-row"><label>视频</label><input class="inp" id="pop-vi-src" placeholder="https://...mp4"></div>' +
+    '<div class="pop-row"><label>封面</label><input class="inp" id="pop-vi-poster" placeholder="封面图 URL（可选）"></div>' +
+    '<div class="pop-foot"><button class="btn btn-plain btn-sm" onclick="closePop()">取消</button><button class="btn btn-sm" onclick="insertTag(\'video\')">插入</button></div></div></span>' +
+    (TRI_ADM_UP.enabled ? '<span class="pop-wrap"><button type="button" onclick="adminUpload(this)"><i class="ri-upload-2-line"></i>上传图片</button></span>' : '') +
+    '<button type="button" id="f-emoji-toggle" title="表情" aria-label="表情"><i class="ri-emotion-line"></i>表情</button>' +
+    '<span class="pop-wrap"><button type="button" onclick="openPop(this,\'live\')"><i class="ri-video-line"></i>插入实况</button>' +
+    '<div class="pop" id="pop-live"><div class="pop-title"><i class="ri-video-line"></i>插入实况到光标处</div>' +
+    '<div class="pop-row"><label>图片</label><input class="inp" id="pop-li-img" placeholder="实况封面图 URL"></div>' +
+    '<div class="pop-row"><label>视频</label><input class="inp" id="pop-li-video" placeholder="实况视频 URL"></div>' +
+    '<div class="pop-foot"><button class="btn btn-plain btn-sm" onclick="closePop()">取消</button><button class="btn btn-sm" onclick="insertTag(\'live\')">插入</button></div></div></span>' +
+    '<span class="pop-wrap"><button type="button" onclick="openPop(this,\'bili\')"><i class="ri-bilibili-line"></i>插入B站视频</button>' +
+    '<div class="pop" id="pop-bili"><div class="pop-title"><i class="ri-bilibili-line"></i>插入B站视频到光标处</div>' +
+    '<div class="pop-row"><label>视频</label><input class="inp" id="pop-bi-url" placeholder="BV 号 / av 号 / B 站链接"></div>' +
+    '<div class="pop-foot"><button class="btn btn-plain btn-sm" onclick="closePop()">取消</button><button class="btn btn-sm" onclick="insertTag(\'bili\')">插入</button></div></div></span>' +
+    '</div></div>' +
+    '<div class="grid">' +
+    '<div class="field"><label><i class="ri-image-line"></i> 图片（每行一个 URL）</label>' +
+    '<textarea class="inp" id="f-images" style="min-height:64px" placeholder="https://...">' + esc(ga) + '</textarea></div>' +
+    '<div class="field"><label><i class="ri-music-2-line"></i> 音乐平台</label>' +
+    '<select class="inp" id="f-mserver"><option value="netease">网易云</option><option value="tencent">QQ 音乐</option><option value="local">本地</option></select></div>' +
+    '<div class="field"><label><i class="ri-music-2-line"></i> 音乐 ID（QQ 填 songmid 或分享链接）</label>' +
+    '<input class="inp" id="f-mid" value="' + esc(d.music ? d.music.id : '') + '" placeholder="如 1973665667 / 004Z8Ihr0JIu5s"></div>' +
+    '<div class="field"><label>音乐标题</label><input class="inp" id="f-mtitle" value="' + esc(d.music ? d.music.title : '') + '"></div>' +
+    '<div class="field"><label>音乐歌手</label><input class="inp" id="f-martist" value="' + esc(d.music ? d.music.artist : '') + '"></div>' +
+    '<div class="field"><label>音乐封面 URL</label><input class="inp" id="f-mpic" value="' + esc(d.music ? d.music.pic : '') + '"></div>' +
+    '<div class="field"><label><i class="ri-video-line"></i> 视频 URL</label><input class="inp" id="f-vsrc" value="' + esc(d.video ? d.video.src : '') + '"></div>' +
+    '<div class="field"><label>视频封面 URL</label><input class="inp" id="f-vposter" value="' + esc(d.video ? d.video.poster : '') + '"></div>' +
+    '<div class="field"><label><i class="ri-video-line"></i> 实况图片 URL</label>' +
+    '<span class="field-row"><input class="inp" id="f-limg" value="' + esc(d.live ? d.live.img : '') + '"><button type="button" class="btn btn-sm" onclick="adminLiveUpload(\'f-limg\')" title="上传实况图片"><i class="ri-upload-2-line"></i>上传</button></span>' +
+    '</div>' +
+    '<div class="field"><label>实况视频 URL</label><span class="field-row"><input class="inp" id="f-lvideo" value="' + esc(d.live ? d.live.video : '') + '"><button type="button" class="btn btn-sm" onclick="adminLiveVideo(\'f-limg\',\'f-lvideo\')" title="上传实况视频（自动提取关键帧作封面）"><i class="ri-video-upload-line"></i>上传视频</button></span></div>' +
+    '<div class="field"><label><i class="ri-bilibili-line"></i> B站视频 BV / av / 链接</label><input class="inp" id="f-bvid" value="' + esc(d.bili ? d.bili.bvid : '') + '" placeholder="BV 号 / av 号 / B 站链接"></div>' +
+    '</div>' +
+    '<div class="field"><label><i class="ri-price-tag-3-line"></i> 分类</label>' +
+    '<select class="inp" id="f-cat">' + catOptions(d.cat || '') + '</select></div>' +
+    '<div class="checks">' +
+    '<label class="check"><input type="checkbox" id="f-private"' + (d.isPrivate ? ' checked' : '') + '> 设为私密（仅自己可见）</label>' +
+    '</div>' +
+    '</div>' +
+    '<div class="dialog-foot">' +
+    '<button class="btn btn-plain" onclick="closeDlg()">取消</button>' +
+    '<button class="btn" id="f-save" onclick="saveForm(\'' + mode + '\',' + (d.cid || 0) + ')">' + (mode === 'add' ? '发布' : '保存') + '</button>' +
+    '</div></div></div>'
+  );
+}
+function openAdd() {
+  var m = document.createElement('div');
+  m.id = 'dlg'; m.innerHTML = formHtml('add', null);
+  document.body.appendChild(m);
+  $('#dlg #f-content').focus();
+  var sel = $('#dlg #f-mserver');
+  if (sel) sel.value = 'netease';
+  bindAdminEmoji(document.getElementById('f-emoji-toggle'), 'f-content');
+}
+function openEdit(cid) {
+  post({ do: 'view', cid: cid }, function (j) {
+    if (!j || !j.ok) { toast((j && j.msg) || '加载失败'); return; }
+    var m = document.createElement('div');
+    m.id = 'dlg'; m.innerHTML = formHtml('edit', j.data);
+    document.body.appendChild(m);
+    var sel = $('#dlg #f-mserver');
+    if (sel && j.data.music) sel.value = j.data.music.server === 'tencent' || j.data.music.server === 'qq' ? 'tencent' : j.data.music.server;
+    bindAdminEmoji(document.getElementById('f-emoji-toggle'), 'f-content');
+  });
+}
+function closeDlg() {
+  var m = document.getElementById('dlg');
+  if (m) { m.remove(); }
+  removeEmojiPanel();
+}
+
+/* ---------- 说说分类管理（独立于文章分类） ---------- */
+function openCats() {
+  var m = document.createElement('div');
+  m.id = 'dlg';
+  m.innerHTML =
+    '<div class="mask" onclick="if(event.target===this)closeDlg()">' +
+    '<div class="dialog" style="max-width:560px">' +
+    '<div class="dialog-head"><b><i class="ri-price-tag-3-line"></i>说说分类管理</b>' +
+    '<button class="x" onclick="closeDlg()"><i class="ri-close-line"></i></button></div>' +
+    '<div class="dialog-body">' +
+    '<div id="cat-form" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">' +
+    '<input class="inp" id="cf-name" placeholder="分类名称（如：日常）" style="flex:1;min-width:130px">' +
+    '<input class="inp" id="cf-slug" placeholder="别名（如：daily，留空自动生成）" style="flex:1;min-width:150px">' +
+    '<button class="btn btn-sm" onclick="saveCat()"><i class="ri-check-line"></i>保存</button>' +
+    '<button class="btn btn-plain btn-sm" id="cf-cancel" onclick="cancelEditCat()" style="display:none"><i class="ri-close-line"></i>取消编辑</button>' +
+    '</div>' +
+    '<div id="cat-sort-bar" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:var(--primary-soft);border-radius:10px">' +
+    '<span style="font-size:12px;color:var(--primary)"><i class="ri-drag-move-2-line"></i> 拖动左侧手柄调整顺序，保存后前台按此顺序显示</span>' +
+    '<button class="btn btn-sm" onclick="saveCatOrder()" style="margin-left:auto"><i class="ri-save-line"></i>保存排序</button>' +
+    '</div>' +
+    '<div id="cat-list" style="display:flex;flex-direction:column;gap:8px;max-height:340px;overflow:auto"></div>' +
+    '</div></div></div>';
+  document.body.appendChild(m);
+  renderCats();
+}
+function renderCats() {
+  var box = document.getElementById('cat-list');
+  if (!box) return;
+  if (!ADM_CATS.length) {
+    box.innerHTML = '<div style="padding:18px;text-align:center;color:var(--text-3);font-size:13px">还没有分类，先在上方添加一个吧～</div>';
+    return;
+  }
+  box.innerHTML = ADM_CATS.map(function (c) {
+    return '<div data-sort-row="1" data-cat-mid="' + c.mid + '" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);transition:opacity .15s">' +
+      '<i class="ri-drag-move-2-line" data-cat-drag style="cursor:grab;color:var(--text-3);font-size:16px;flex:none" title="拖动排序"></i>' +
+      '<i class="ri-price-tag-3-line" style="color:var(--primary)"></i>' +
+      '<div style="flex:1;min-width:0">' +
+      '<div style="font-size:13px;font-weight:600">' + esc(c.name) + '</div>' +
+      '<div style="font-size:11px;color:var(--text-3)">' + esc(c.slug) + ' · ' + c.count + ' 条说说</div>' +
+      '</div>' +
+      '<button class="btn btn-plain btn-sm" onclick="editCat(' + c.mid + ')"><i class="ri-edit-line"></i>编辑</button>' +
+      '<button class="btn btn-danger btn-sm" onclick="delCat(' + c.mid + ')"><i class="ri-delete-bin-line"></i>删除</button>' +
+      '</div>';
+  }).join('');
+  bindCatDrag();
+}
+var EDIT_CAT_MID = 0;
+/* 说说分类拖拽排序：拖动左侧手柄调整顺序，保存后前台（tri_moment_cats 按 order）按此显示 */
+function syncCatOrder() {
+  var box = document.getElementById('cat-list');
+  if (!box) { return; }
+  var rows = Array.prototype.slice.call(box.querySelectorAll('[data-sort-row]'));
+  var ordered = [];
+  rows.forEach(function (r) {
+    var mid = parseInt(r.getAttribute('data-cat-mid'), 10);
+    for (var i = 0; i < ADM_CATS.length; i++) {
+      if (ADM_CATS[i].mid === mid) { ordered.push(ADM_CATS[i]); break; }
+    }
+  });
+  if (ordered.length === ADM_CATS.length) { ADM_CATS = ordered; }
+}
+function bindCatDrag() {
+  var box = document.getElementById('cat-list');
+  if (!box || box.getAttribute('data-drag-bound')) { return; }
+  box.setAttribute('data-drag-bound', '1');
+  var dragRow = null;
+  box.addEventListener('mousedown', function (e) {
+    var h = e.target && e.target.closest ? e.target.closest('[data-cat-drag]') : null;
+    if (!h || e.button !== 0) { return; }
+    var row = h.closest('[data-sort-row]');
+    if (!row) { return; }
+    e.preventDefault();
+    dragRow = row;
+  });
+  window.addEventListener('mousemove', function (e) {
+    if (!dragRow || !dragRow.isConnected) { dragRow = null; return; }
+    var rows = Array.prototype.slice.call(box.querySelectorAll('[data-sort-row]'));
+    var cur = rows.indexOf(dragRow);
+    if (cur < 0) { return; }
+    if (cur > 0) {
+      var prev = rows[cur - 1];
+      var prc = prev.getBoundingClientRect();
+      if (e.clientY < prc.top + prc.height / 2) { box.insertBefore(dragRow, prev); return; }
+    }
+    if (cur < rows.length - 1) {
+      var next = rows[cur + 1];
+      var nrc = next.getBoundingClientRect();
+      if (e.clientY > nrc.top + nrc.height / 2) { box.insertBefore(dragRow, next.nextSibling); }
+    }
+  });
+  window.addEventListener('mouseup', function () {
+    if (dragRow) { dragRow = null; syncCatOrder(); }
+  });
+}
+function saveCatOrder() {
+  if (!ADM_CATS.length) { toast('没有可排序的分类'); return; }
+  var ids = ADM_CATS.map(function (c) { return c.mid; }).join(',');
+  post({ do: 'cat_order', ids: ids }, function (j) {
+    if (!j || !j.ok) { toast((j && j.msg) || '保存失败'); return; }
+    toast('排序已保存');
+  });
+}
+function editCat(mid) {
+  var c = null;
+  ADM_CATS.forEach(function (x) { if (x.mid === mid) c = x; });
+  if (!c) return;
+  EDIT_CAT_MID = mid;
+  document.getElementById('cf-name').value = c.name;
+  document.getElementById('cf-slug').value = c.slug;
+  var cu = document.getElementById('cf-cancel');
+  if (cu) { cu.style.display = 'inline-flex'; }
+  document.getElementById('cf-name').focus();
+}
+function cancelEditCat() {
+  EDIT_CAT_MID = 0;
+  document.getElementById('cf-name').value = '';
+  document.getElementById('cf-slug').value = '';
+  var cu = document.getElementById('cf-cancel');
+  if (cu) { cu.style.display = 'none'; }
+}
+function saveCat() {
+  var name = document.getElementById('cf-name').value.trim();
+  var slug = document.getElementById('cf-slug').value.trim();
+  if (!name && !slug) { toast('请填写名称'); return; }
+  post({ do: 'cat_save', mid: EDIT_CAT_MID, name: name, slug: slug }, function (j) {
+    if (!j || !j.ok) { toast((j && j.msg) || '保存失败'); return; }
+    toast(EDIT_CAT_MID ? '分类已更新' : '分类已保存');
+    EDIT_CAT_MID = 0;
+    document.getElementById('cf-name').value = '';
+    document.getElementById('cf-slug').value = '';
+    var cu = document.getElementById('cf-cancel');
+    if (cu) { cu.style.display = 'none'; }
+    loadCats(function () { renderCats(); });
+  });
+}
+function delCat(mid) {
+  var c = null;
+  ADM_CATS.forEach(function (x) { if (x.mid === mid) c = x; });
+  if (!c) return;
+  if (!confirm('删除分类「' + c.name + '」？该分类下的说说会变为未分类。')) return;
+  post({ do: 'cat_del', mid: mid }, function (j) {
+    if (!j || !j.ok) { toast((j && j.msg) || '删除失败'); return; }
+    toast('分类已删除');
+    loadCats(function () { renderCats(); });
+  });
+}
+
+/* ---------- 插入内容（光标处） ---------- */
+function extractId(raw) {
+  raw = (raw || '').trim();
+  if (/^[A-Za-z0-9]+$/.test(raw)) { return raw; }
+  var m = raw.match(/songDetail\/([A-Za-z0-9]+)/) || raw.match(/songmid=([A-Za-z0-9]+)/) || raw.match(/[?&]id=(\d+)/) || raw.match(/\/song\/(\d+)/);
+  return m ? m[1] : '';
+}
+function extractBvid(raw) {
+  raw = (raw || '').trim();
+  if (!raw) { return ''; }
+  var m = raw.match(/BV[0-9A-Za-z]{6,}/);
+  if (m) { return m[0]; }
+  m = raw.match(/av(\d+)/i);
+  if (m) { return 'av' + m[1]; }
+  if (/^\d+$/.test(raw)) { return 'av' + raw; }
+  return '';
+}
+function insertAtCursor(ta, tag) {
+  if (!ta) { return; }
+  var s = ta.selectionStart == null ? ta.value.length : ta.selectionStart;
+  var e = ta.selectionEnd == null ? ta.value.length : ta.selectionEnd;
+  ta.value = ta.value.slice(0, s) + tag + ta.value.slice(e);
+  ta.focus();
+  var pos = s + tag.length;
+  ta.setSelectionRange(pos, pos);
+}
+function openPop(btn, type) {
+  closePop();
+  var p = document.getElementById('pop-' + type);
+  if (p) { p.classList.add('show'); }
+}
+function closePop() {
+  document.querySelectorAll('#dlg .pop').forEach(function (p) { p.classList.remove('show'); });
+}
+function insertTag(type) {
+  var ta = document.getElementById('f-content');
+  var tag = '';
+  if (type === 'img') {
+    var u = document.getElementById('pop-img-url').value.trim();
+    if (!u) { toast('请填写图片 URL'); return; }
+    tag = '[img]' + u + '[/img]';
+  } else if (type === 'music') {
+    var srv = document.getElementById('pop-mu-server').value;
+    var id = extractId(document.getElementById('pop-mu-id').value);
+    if (!id) { toast('请填写音乐 ID 或分享链接'); return; }
+    tag = '[music]' + (srv === 'tencent' ? 'qq' : 'netease') + '|' + id + '[/music]';
+  } else if (type === 'video') {
+    var vs = document.getElementById('pop-vi-src').value.trim();
+    if (!vs) { toast('请填写视频 URL'); return; }
+    var vp = document.getElementById('pop-vi-poster').value.trim();
+    tag = vp ? '[video]' + vs + '|' + vp + '[/video]' : '[video]' + vs + '[/video]';
+  } else if (type === 'live') {
+    var li = document.getElementById('pop-li-img').value.trim();
+    var lv = document.getElementById('pop-li-video').value.trim();
+    if (!li || !lv) { toast('实况需要图片和视频'); return; }
+    tag = '[live]' + li + '|' + lv + '[/live]';
+  } else if (type === 'bili') {
+    var bu = document.getElementById('pop-bi-url').value.trim();
+    var bv = extractBvid(bu);
+    if (!bv) { toast('请填写 B 站 BV 号 / av 号 / 链接'); return; }
+    tag = '[bili]' + bv + '[/bili]';
+  }
+  insertAtCursor(ta, tag);
+  closePop();
+  toast('已插入到内容');
+}
+function collectForm() {
+  var val = function (id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; };
+  var content = val('f-content');
+  if (!content) { toast('内容不能为空'); return null; }
+  var data = { content: content, images: val('f-images'), private: document.getElementById('f-private').checked ? '1' : '', cat: val('f-cat') };
+  var ms = val('f-mserver'), mi = val('f-mid');
+  if (ms && mi) {
+    data.music_server = ms;
+    data.music_id = extractId(mi);
+    data.music_title = val('f-mtitle');
+    data.music_artist = val('f-martist');
+    data.music_pic = val('f-mpic');
+  }
+  var vs = val('f-vsrc');
+  if (vs) { data.video_src = vs; data.video_poster = val('f-vposter'); }
+  var li = val('f-limg'), lv = val('f-lvideo');
+  if (li || lv) { data.live_img = li || ''; data.live_video = lv || ''; }
+  var bv = val('f-bvid');
+  var bvId = extractBvid(bv);
+  if (bvId) { data.bili_bvid = bvId; }
+  return data;
+}
+function saveForm(mode, cid) {
+  var data = collectForm();
+  if (!data) { return; }
+  data.do = mode;
+  if (mode === 'edit') { data.cid = cid; }
+  var btn = $('#f-save');
+  if (btn) { btn.disabled = true; btn.textContent = '保存中…'; }
+  post(data, function (j) {
+    if (!j || !j.ok) { toast((j && j.msg) || '保存失败'); if (btn) { btn.disabled = false; btn.textContent = '保存'; } return; }
+    toast(mode === 'add' ? '发布成功' : '保存成功');
+    closeDlg();
+    load(state.page);
+  });
+}
+
+/* ---------- 启动 ---------- */
+loadUploadCfg();
+loadCats();
+load(1);
+</script>
+</body>
+</html>
