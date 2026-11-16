@@ -14,9 +14,10 @@ $triDomain = (string) parse_url($triUrl, PHP_URL_HOST);
 if ($triDomain === '') { $triDomain = $triUrl; }
 $triFirst = function_exists('mb_substr') ? mb_substr($triName, 0, 1) : substr($triName, 0, 1);
 if (!isset($triShot)) { $triShot = ''; }
+$triShotAttr = $triShot !== '' ? 'src="' . htmlspecialchars($triShot) . '" loading="eager" decoding="async"' : '';
 ?>
 <a class="link-bar tri3-reveal main-reveal" href="<?php echo htmlspecialchars($triUrl); ?>" target="_blank" rel="noopener nofollow">
-            <img class="link-bar-bg" <?php echo tri3_img_lazy_attrs($triShot, '', '', ''); ?> alt="<?php echo htmlspecialchars($triName); ?> 网站截图" onload="this.style.display='block';this.parentNode.classList.remove('is-fallback');" onerror="this.style.display='none';this.parentNode.classList.add('is-fallback');">
+            <img class="link-bar-bg" <?php echo $triShotAttr; ?> alt="<?php echo htmlspecialchars($triName); ?> 网站截图" data-shot-retries="0" onload="if(this.naturalWidth>1){this.parentNode.classList.remove('is-fallback');}else{this.parentNode.classList.add('is-fallback');var n=parseInt(this.dataset.shotRetries||'0',10);if(n<3){this.dataset.shotRetries=String(n+1);var el=this;setTimeout(function(){el.src='<?php echo htmlspecialchars($triShot, ENT_QUOTES); ?>'+(<?php echo strpos($triShot, '?') === false ? "'?'" : "'&'"; ?>)+'shot_retry='+Date.now();},2500);}}" onerror="this.parentNode.classList.add('is-fallback');var n=parseInt(this.dataset.shotRetries||'0',10);if(n<3){this.dataset.shotRetries=String(n+1);var el=this;setTimeout(function(){el.src='<?php echo htmlspecialchars($triShot, ENT_QUOTES); ?>'+(<?php echo strpos($triShot, '?') === false ? "'?'" : "'&'"; ?>)+'shot_retry='+Date.now();},2500);}">
             <div class="link-bar-fallback"><i class="ri-global-line"></i><span><?php echo htmlspecialchars($triDomain); ?></span></div>
             <div class="link-bar-shade"></div>
             <div class="link-bar-content">

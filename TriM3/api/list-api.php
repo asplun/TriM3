@@ -390,7 +390,7 @@ if ($triType === 'page' && $triSlug !== '') {
             $triDomain = (string) parse_url($triLink['url'], PHP_URL_HOST);
             if ($triDomain === '') { $triDomain = $triLink['url']; }
             $triFirst = function_exists('mb_substr') ? mb_substr($triLink['name'], 0, 1) : substr($triLink['name'], 0, 1);
-            $triShot = $triShotBase . urlencode($triLink['url']) . '&v=1.2.5'; ?>
+            $triShot = $triShotBase . urlencode($triLink['url']) . '&v=1.2.6'; ?>
         <?php include dirname(__DIR__) . '/component/link-item.php'; ?>
         <?php endforeach; ?>
       </div>

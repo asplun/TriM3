@@ -133,7 +133,7 @@ $triCtx = stream_context_create(array(
     'http' => array('timeout' => 5, 'ignore_errors' => true),
     'ssl'  => array('verify_peer' => true, 'verify_peer_name' => true),
 ));
-$triImg = @file_get_contents('https://image.thum.io/get/maxAge/24/width/400/allowJPG/' . rawurlencode($triUrl), false, $triCtx);
+$triImg = @file_get_contents('https://image.thum.io/get/maxAge/24/width/400/allowJPG/' . $triUrl, false, $triCtx);
 if (($triImg === false || strlen($triImg) < 800) && (microtime(true) - $triT0) < 3) {
     $triImg2 = @file_get_contents('https://s0.wp.com/mshots/v1/' . urlencode($triUrl) . '?w=400&h=300', false, $triCtx);
     if ($triImg2 !== false && strlen($triImg2) > 800) { $triImg = $triImg2; }

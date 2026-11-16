@@ -5,7 +5,7 @@
  *
  * @package TriRedisCache
  * @author 薄荷
- * @version 1.2.5
+ * @version 1.2.6
  * @description Redis object and anonymous page cache for Typecho and TriM3. Supports phpredis and bundled Predis.
  */
 
@@ -283,7 +283,7 @@ final class TriRedisCache_Plugin implements PluginInterface
             $sampleDetails[] = $client->keyInfo($key);
         }
 
-        $html = '<link rel="stylesheet" href="' . htmlspecialchars($siteUrl . '/usr/plugins/TriRedisCache/assets/admin.css?v=1.2.0', ENT_QUOTES, 'UTF-8') . '">';
+        $html = '<link rel="stylesheet" href="' . htmlspecialchars($siteUrl . '/usr/plugins/TriRedisCache/assets/admin.css?v=1.2.6', ENT_QUOTES, 'UTF-8') . '">';
         $html .= '<div class="trc-dash">';
         $html .= '<div class="trc-head"><div><span class="trc-dot"></span><strong>Redis 缓存状态</strong></div>'
             . '<div class="trc-head-right"><div class="trc-sub">'

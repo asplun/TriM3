@@ -118,7 +118,7 @@ $this->need('header.php'); ?>
               if ($triDomain === '') { $triDomain = $triUrl; }
               $triFirst = function_exists('mb_substr') ? mb_substr($triName, 0, 1) : substr($triName, 0, 1);
               /* 网站截图：走主题 shot-api 缓存代理（服务端缓存 N 天，超期自动重拉） */
-              $triShot = rtrim((string) $this->options->siteUrl, '/') . '/usr/themes/' . $this->options->theme . '/api/shot-api.php?url=' . urlencode($triUrl) . '&v=1.2.5';
+              $triShot = rtrim((string) $this->options->siteUrl, '/') . '/usr/themes/' . $this->options->theme . '/api/shot-api.php?url=' . urlencode($triUrl) . '&v=1.2.6';
           ?>
           <?php include __DIR__ . '/component/link-item.php'; ?>
           <?php endforeach; ?>
