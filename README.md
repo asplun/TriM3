@@ -5,8 +5,8 @@
 ## 项目组成
 
 - TriM3：Typecho 主题本体，包含模板、组件、API、前端资源和后台配置页面。
-- TriM3Core：主题运行所依赖的公共核心代码与约定。当前版本先以主题内的核心目录和接口为准，后续会在完成边界拆分与独立测试后补充独立发布包。
-- TriRedisCache：面向 Typecho 的 Redis 缓存插件，支持 Predis 与 PHP Redis 客户端，提供页面缓存、对象缓存和管理状态查看。
+- TriM3Core：必需配套插件，提供 Joe 编辑器集成与原生评论过滤桥。必须与 TriM3 主题一起安装。
+- TriRedisCache：配套 Redis 缓存插件，提供对象缓存、匿名页面缓存和管理状态面板；启用主题缓存集成时需安装。
 
 ## 特性
 
@@ -25,12 +25,15 @@
 
 ## 安装
 
-1. 将 TriM3/ 复制到 Typecho 的 usr/themes/。
-2. 将 TriRedisCache/ 复制到 usr/plugins/，在后台启用并配置 Redis。
-3. 在 Typecho 后台启用 TriM3，并按需创建主题页面。
-4. 首次上线前检查 api/ 接口的站点路径、HTTPS 和跨域策略。
+1. 将 `TriM3/` 复制到 Typecho 的 `usr/themes/`。
+2. 将 `TriM3Core/` 复制到 `usr/plugins/` 并启用；它是主题必需插件。
+3. 将 `TriRedisCache/` 复制到 `usr/plugins/`；需要 Redis 缓存功能时启用并配置。
+4. 在 Typecho 后台启用 TriM3，并按需创建主题页面。
+5. 首次上线前检查 API 的站点路径、HTTPS 和跨域策略。
 
-主题目录中的 cache/ 与 assets/cache/ 仅用于运行时数据，不应提交到版本库；发布包会排除这些运行缓存。
+主题与 TriM3Core 必须成套安装；TriRedisCache 为可选缓存插件。
+
+主题目录中的 `cache/` 与 `assets/cache/` 仅用于运行时数据，不应提交到版本库。
 
 ## 版本
 
@@ -38,9 +41,9 @@
 
 ## 许可
 
-本项目使用 PolyForm Noncommercial License 1.0.0。它允许个人研究、学习、业余项目以及符合许可定义的非商业组织使用、修改和分发；商业使用需要先取得版权所有者的单独授权。
+本项目使用 PolyForm Noncommercial License 1.0.0，属于限制商业用途的源码许可，并非 OSI 定义的开源许可证。个人研究、学习、业余项目等非商业用途按许可条款使用；商业使用需事先取得版权所有者的单独授权。
 
-Typecho、Redis、Predis、Meting 以及主题中携带的第三方字体、库和媒体资源仍分别适用其原始许可。发布前请查看 THIRD-PARTY-NOTICES.md，不要将第三方资源误认为本项目原创内容。
+Typecho、Predis 以及主题中携带的第三方字体、库和媒体资源仍分别适用其原始许可。请查看 `THIRD-PARTY-NOTICES.md` 及各组件附带的许可文件。
 
 ## 免责声明
 
