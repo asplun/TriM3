@@ -1,27 +1,36 @@
+<div align="center">
+
 # TriM3
 
-> 给 Typecho 的一套清爽、完整、能长期使用的个人博客方案。
+### 给 Typecho 的三栏个人博客主题
 
-TriM3 是一款以内容阅读为中心的 Typecho 主题。它把文章、说说、相册、友链、豆瓣、番剧和音乐收进一个统一的界面，同时保留个人站点需要的评论、登录、图片处理和后台配置能力。
+以阅读为中心，收好文章、日常与兴趣；桌面舒展，手机也好用。
 
-界面采用 Material Design 3 的视觉语言，三栏布局在桌面端便于浏览，移动端保持轻量；Swup 负责站内无刷新切换，播放器、主题色和页面状态可以自然延续。
+[在线预览](https://abohe.cn/) · [下载 v1.2.6](https://github.com/asplun/TriM3/releases/tag/v1.2.6) · [安装说明](#安装)
 
-这是一个适合个人博客、独立站和长期维护站点的主题项目。它不追求堆叠功能，而是把常用页面、配套插件和部署说明放在同一个项目里，安装后即可按自己的内容和风格调整。
+[![Typecho](https://img.shields.io/badge/Typecho-1.3-2b6cb0?style=flat-square)](https://typecho.org/)
+[![Release](https://img.shields.io/github/v/release/asplun/TriM3?style=flat-square)](https://github.com/asplun/TriM3/releases)
+[![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial-6875a5?style=flat-square)](LICENSE)
 
-## 项目组成
+</div>
 
-- `TriM3`：主题本体，包含模板、组件、API、前端资源和后台配置页面。
-- `TriM3Core`：必需配套插件，提供编辑器集成和原生评论过滤桥，必须与主题一起安装。
-- `TriRedisCache`：Redis 缓存插件，提供对象缓存、匿名页面缓存和管理状态面板，按需启用。
+TriM3 是一款面向个人博客和独立站的 Typecho 主题。它采用 Material Design 3 视觉语言，以清晰的三栏布局呈现文章，也为说说、相册、友链、豆瓣、番剧和音乐留出各自的位置。站内切换由 Swup 驱动，桌面与移动端使用同一套内容和配置。
 
-## 特性
+## 项目组件
 
-- Material Design 3 风格三栏布局、响应式移动端和深色模式
-- 说说、相册、友链、豆瓣、番剧、归档与音乐页面
-- Swup 站内无刷新导航，播放器跨页面保持
-- 图片代理、图片缓存、懒加载和失败兜底
-- 评论通知、访问统计、登录和后台可视化设置
-- Meting 音乐接口与可配置的主题色、轮播图和页面模块
+- `TriM3`：主题本体。
+- `TriM3Core`：必需插件，提供编辑器集成与原生评论过滤桥；必须和主题一起安装。
+- `TriRedisCache`：Redis 对象缓存与匿名页面缓存插件，需要缓存功能时再启用。
+
+## 你会用到的功能
+
+- 三栏桌面布局、移动端适配与深色模式
+- 文章、说说、相册、友链、豆瓣、番剧、归档和音乐页面
+- Swup 无刷新导航，播放器可跨页面延续
+- 图片代理与缓存、懒加载、友链网站截图
+- 评论通知、访问统计、登录入口和可视化主题设置
+- 可配置页面模块、主题色与轮播内容
+
 
 ## 环境要求
 
