@@ -33,8 +33,11 @@ function themeInit($archive): void
 
     if (function_exists('tri_widgets_ip_weather_variant')) {
         $triRedisVariant = tri_widgets_ip_weather_variant();
-        /* 城市未知时不再整页跳过 Redis 页缓存（那样等于让所有非常见 IP 的访客
-           都吃不到缓存）。改为不设置 variant，页面按默认城市渲染并正常缓存。 */
+        /* 按访客 IP 定位的天气不能进入 CDN 公共缓存，否则一个访客的城市会被所有人复用。 */
+        if (!headers_sent() && function_exists('tri_widgets_has_ip_weather') && tri_widgets_has_ip_weather()) {
+            header('Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0');
+            header('Pragma: no-cache');
+        }
         if ($triRedisVariant !== '' && $triRedisVariant !== 'unknown' && !defined('TRI_REDIS_PAGE_VARIANT')) {
             define('TRI_REDIS_PAGE_VARIANT', $triRedisVariant);
         }

@@ -985,6 +985,25 @@ function tri3_client_ip(): string
     return '';
 }
 
+/** 返回 CDN 转发链中的第一个公网 IP，供高德定位使用。 */
+function tri3_public_client_ip(): string
+{
+    $triCands = array();
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $triCands = array_merge($triCands, explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']));
+    }
+    foreach (array('HTTP_X_REAL_IP', 'HTTP_CF_CONNECTING_IP', 'REMOTE_ADDR') as $triHeader) {
+        if (!empty($_SERVER[$triHeader])) { $triCands[] = (string) $_SERVER[$triHeader]; }
+    }
+    foreach ($triCands as $triIp) {
+        $triIp = trim($triIp);
+        if ($triIp !== '' && filter_var($triIp, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return $triIp;
+        }
+    }
+    return '';
+}
+
 /**
  * 调试日志：默认关闭，只在后台「调试日志」开关打开时写入 cache/debug.log
  * （原来若干处无条件写 /tmp，生产环境既浪费 IO 又把访客信息落到 tmp 里）。

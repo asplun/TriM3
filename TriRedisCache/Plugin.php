@@ -5,7 +5,7 @@
  *
  * @package TriRedisCache
  * @author 薄荷
- * @version 1.2.7
+ * @version 1.2.8
  * @description Redis object and anonymous page cache for Typecho and TriM3. Supports phpredis and bundled Predis.
  */
 

@@ -1111,10 +1111,8 @@ function tri_widgets_weather_refresh(string $triKey, string $triLoc, string $tri
 /* 渲染用：只读已有缓存，绝不联网 */
 function tri_widgets_amap_city(string $triKey): string
 {
-    $triIp = function_exists('tri3_client_ip') ? tri3_client_ip() : (string) ($_SERVER['REMOTE_ADDR'] ?? '');
-    if ($triIp === '' || filter_var($triIp, FILTER_VALIDATE_IP) === false) { return ''; }
-    /* 内网 / 保留地址无法定位 */
-    if (!filter_var($triIp, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { return ''; }
+    $triIp = function_exists('tri3_public_client_ip') ? tri3_public_client_ip() : '';
+    if ($triIp === '') { return ''; }
 
     $triRedisKey = 'amap-' . md5($triIp);
     $triRedisCity = tri_redis_get($triRedisKey, 'geo');
@@ -1131,9 +1129,10 @@ function tri_widgets_amap_city(string $triKey): string
         $triCity = tri_widgets_amap_refresh($triKey, $triIp, $triFile);
         if ($triCity !== '') {
             tri_redis_set($triRedisKey, $triCity, 'geo', 2700);
+            tri_redis_invalidate(array('page'), 'weather location refreshed');
         }
     });
-    return $triCity;
+    return '';
 }
 
 /* 真正联网取数：只在延迟队列里执行 */

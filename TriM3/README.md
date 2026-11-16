@@ -2,8 +2,8 @@
 
 TriM3 是一款面向 Typecho 的 Material Design 3 三栏响应式个人博客主题。它包含说说、相册、友链、豆瓣、番剧、归档、音乐播放器与评论通知等页面功能，并支持深色模式、图片懒加载和 Swup 站内无刷新导航。
 
-当前版本：1.2.7。安装方法、环境要求、许可说明和项目组件见仓库根目录 README。
+当前版本：1.2.8。安装方法、环境要求、许可说明和项目组件见仓库根目录 README。
+
+v1.2.8 修复 CDN 环境下的天气定位、页面缓存和访客城市显示问题。
 
 v1.2.7 更新为无到期日的 TriM3 Noncommercial License 1.0。
-
-主题代码遵循仓库根目录 `LICENSE` 中的 TriM3 Noncommercial License 1.0；随主题分发的第三方字体、图标和前端库仍遵循各自的原始许可，详见 THIRD-PARTY-NOTICES.md。
