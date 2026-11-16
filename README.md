@@ -10,7 +10,7 @@
 
 [![Typecho](https://img.shields.io/badge/Typecho-1.3-2b6cb0?style=flat-square)](https://typecho.org/)
 [![Release](https://img.shields.io/github/v/release/asplun/TriM3?style=flat-square)](https://github.com/asplun/TriM3/releases)
-[![License](https://img.shields.io/badge/license-TriM3%20Noncommercial-6875a5?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-TriM3%20Noncommercial-6875a5?style=flat-square)](https://raw.githubusercontent.com/asplun/TriM3/main/LICENSE)
 
 </div>
 
@@ -75,4 +75,4 @@ Typecho、Predis 以及主题中携带的第三方字体、库和媒体资源仍
 
 - 项目演示与更新信息以仓库发布页为准。
 - Typecho：https://typecho.org/
-- TriM3 Noncommercial License：https://github.com/asplun/TriM3/blob/main/LICENSE
+- TriM3 Noncommercial License：https://raw.githubusercontent.com/asplun/TriM3/main/LICENSE
