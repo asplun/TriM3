@@ -15,7 +15,7 @@
  *
  * @package TriM3Core
  * @author 薄荷
- * @version 1.2.6
+ * @version 1.2.7
  */
 
 if (!defined('__TYPECHO_ROOT_DIR__')) {

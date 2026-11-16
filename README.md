@@ -10,7 +10,7 @@
 
 [![Typecho](https://img.shields.io/badge/Typecho-1.3-2b6cb0?style=flat-square)](https://typecho.org/)
 [![Release](https://img.shields.io/github/v/release/asplun/TriM3?style=flat-square)](https://github.com/asplun/TriM3/releases)
-[![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial-6875a5?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-TriM3%20Noncommercial-6875a5?style=flat-square)](LICENSE)
 
 </div>
 
@@ -52,17 +52,18 @@ TriM3 是一款面向个人博客和独立站的 Typecho 主题。它采用 Mate
 
 ## 版本
 
-当前版本：1.2.6。版本号同时写入主题头部、资源版本参数、主题信息和发布包名称。每次发布使用 vMAJOR.MINOR.PATCH Git tag，并在主题目录 README 的变更记录中记录兼容性、数据库影响和回滚方式。
+当前版本：1.2.7。版本号同时写入主题头部、资源版本参数、主题信息和发布包名称。每次发布使用 vMAJOR.MINOR.PATCH Git tag，并在主题目录 README 的变更记录中记录兼容性、数据库影响和回滚方式。
 
-### v1.2.6
+### v1.2.7
 
-- 修复友链截图代理对 `thum.io` 目标 URL 的错误编码，恢复截图缓存生成。
-- 友链截图首次生成期间保留可见兜底，并自动重试，避免卡片背景长期透明。
-- 主题与动态友链片段的截图资源参数同步更新。
+- 更新为无到期日的 `TriM3 Noncommercial License 1.0`。
+- 在项目首页明确标注非商业使用边界和第三方组件许可范围。
 
 ## 许可
 
-本项目使用 PolyForm Noncommercial License 1.0.0，属于限制商业用途的源码许可，并非 OSI 定义的开源许可证。个人研究、学习、业余项目等非商业用途按许可条款使用；商业使用需事先取得版权所有者的单独授权。
+本项目使用 `TriM3 Noncommercial License 1.0`，这是项目自有的非商业软件许可，不设到期日。它允许个人使用、学习研究、业余项目和非营利活动中的使用、修改与分发，但明确禁止将本项目用于商业网站、付费产品、广告营利、SaaS、托管服务或其他商业用途。商业使用必须事先取得版权所有者的书面授权。
+
+这不是 OSI 定义的开源许可证。使用、修改或分发前，请完整阅读仓库中的 `LICENSE` 文件。
 
 Typecho、Predis 以及主题中携带的第三方字体、库和媒体资源仍分别适用其原始许可。请查看 `THIRD-PARTY-NOTICES.md` 及各组件附带的许可文件。
 
@@ -74,4 +75,4 @@ Typecho、Predis 以及主题中携带的第三方字体、库和媒体资源仍
 
 - 项目演示与更新信息以仓库发布页为准。
 - Typecho：https://typecho.org/
-- PolyForm Licenses：https://polyformproject.org/licenses/noncommercial/1.0.0/
+- TriM3 Noncommercial License：https://github.com/asplun/TriM3/blob/main/LICENSE
