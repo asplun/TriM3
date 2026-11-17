@@ -62,6 +62,7 @@ function themeConfigHandle($settings, $isInit): void
         }
         return;
     }
+    $name = 'theme:' . $theme;
     $db = Typecho\Db::get();
     $backupName = 'tri3_theme_settings';
     $backupRow = $db->fetchRow($db->select()->from('table.options')->where('name = ?', $backupName));
