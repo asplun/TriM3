@@ -544,7 +544,7 @@ $triHomeMode = $this->is('index') ? tri_opt('homeListMode', 'original') : '';
 <?php if ($triPageKey === 'bangumi'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/bangumi.min.css'); ?>?v=1.2.5"><?php endif; ?>
 
 <?php if ($triPageKey === 'links'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/links.min.css'); ?>?v=1.2.5"><?php endif; ?>
-<?php if ($triPageKey === 'music'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/page-music.min.css'); ?>?v=1.2.5"><?php endif; ?>
+<?php if ($triPageKey === 'music'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/page-music.min.css'); ?>?v=1.2.6"><?php endif; ?>
 
 <?php endif; ?>
 
@@ -1353,7 +1353,7 @@ img.img-fallback { opacity: 1; filter: none; transform: none; }
 <script src="<?php $this->options->themeUrl('assets/js/swup-head-plugin.js'); ?>?v=1.2.5" defer></script>
 <script src="<?php $this->options->themeUrl('assets/js/swup-body-class-plugin.js'); ?>?v=1.2.5" defer></script>
 <script src="<?php $this->options->themeUrl('assets/js/swup-preload-plugin.js'); ?>?v=1.2.5" defer></script>
-<script src="<?php $this->options->themeUrl('assets/js/tri-swup.js'); ?>?v=1.2.5" defer></script>
+<script src="<?php $this->options->themeUrl('assets/js/tri-swup.js'); ?>?v=1.2.7" defer></script>
 <?php endif; ?>
 
 <link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/notifications.css'); ?>?v=1.2.5">

@@ -497,7 +497,7 @@ document.addEventListener('swup:visit:start', function() {
 <!-- TriPlayer persists across Swup navigation as a singleton; no continuity script needed. -->
 <!-- TriM3 · Stimulus 应用入口（Swup 配套）：导航后初始化的唯一入口 -->
 
-<script type="module" src="<?php $this->options->themeUrl('assets/js/tri-app.js'); ?>?v=1.2.5"></script>
+<script type="module" src="<?php $this->options->themeUrl('assets/js/tri-app.js'); ?>?v=1.2.6"></script>
 
 </body>
 

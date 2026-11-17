@@ -789,14 +789,14 @@ if ($type === 'playlist-info') {
             $info['description'] = $pl['desc'] ?? ($pl['diss_desc'] ?? '');
             $info['trackCount'] = $pl['song_cnt'] ?? $count;
         }
-        $cd = $resp['data']['cdlist'][0] ?? null;
+        $cd = $resp['data']['cdlist'][0] ?? ($resp['cdlist'][0] ?? null);
         if ($cd) {
-            $info['name'] = $cd['title'] ?? '';
+            $info['name'] = $cd['title'] ?? ($cd['dissname'] ?? '');
             $info['cover'] = tri3_meting_https($cd['logo'] ?? $coverUrl);
-            $info['creator'] = $cd['nickname'] ?? '';
-            $info['playCount'] = $cd['visitnum'] ?? 0;
-            $info['description'] = $cd['desc'] ?? '';
-            $info['trackCount'] = $cd['total_song_num'] ?? $count;
+            $info['creator'] = $cd['nickname'] ?? ($cd['nick'] ?? '');
+            $info['playCount'] = (int) ($cd['visitnum'] ?? 0);
+            $info['description'] = $cd['desc'] ?? ($cd['diss_desc'] ?? '');
+            $info['trackCount'] = $cd['total_song_num'] ?? ($cd['song_cnt'] ?? $count);
         }
     }
 

@@ -55,6 +55,33 @@ function themeInit($archive): void
 
 function themeConfigHandle($settings, $isInit): void
 {
+    $theme = (string) Helper::options()->theme;
+    if ($theme !== 'TriM3') {
+        if (!$isInit && function_exists('tri_redis_invalidate')) {
+            tri_redis_invalidate(['page', 'fusion', 'moments', 'albums', 'remote', 'weather', 'geo', 'comments', 'widgets'], 'theme settings updated');
+        }
+        return;
+    }
+    $db = Typecho\Db::get();
+    $backupName = 'tri3_theme_settings';
+    $backupRow = $db->fetchRow($db->select()->from('table.options')->where('name = ?', $backupName));
+    $backup = ($backupRow && isset($backupRow['value'])) ? json_decode((string) $backupRow['value'], true) : array();
+    if (!is_array($backup)) { $backup = array(); }
+    $row = $db->fetchRow($db->select()->from('table.options')->where('name = ?', $name));
+    $current = ($row && isset($row['value'])) ? json_decode((string) $row['value'], true) : array();
+    if (!is_array($current)) { $current = array(); }
+    $merged = $isInit
+        ? array_merge(is_array($settings) ? $settings : array(), $backup)
+        : array_merge($current, is_array($settings) ? $settings : array());
+    $json = json_encode($merged, JSON_UNESCAPED_UNICODE);
+    foreach (array($name, $backupName) as $key) {
+        $saved = $db->fetchRow($db->select()->from('table.options')->where('name = ?', $key));
+        if ($saved) {
+            $db->query($db->update('table.options')->rows(array('value' => $json))->where('name = ?', $key));
+        } else {
+            $db->query($db->insert('table.options')->rows(array('name' => $key, 'user' => 0, 'value' => $json)));
+        }
+    }
     if (!$isInit && function_exists('tri_redis_invalidate')) {
         tri_redis_invalidate(
             ['page', 'fusion', 'moments', 'albums', 'remote', 'weather', 'geo', 'comments', 'widgets'],

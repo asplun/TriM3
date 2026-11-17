@@ -25,6 +25,18 @@ if (!defined('__TYPECHO_ROOT_URL__')) {
 
 \Widget\Init::alloc();
 
+/* Apply Typecho content filters to this standalone response fragment. */
+ob_start(function ($triApiHtml) {
+    $triFiltered = \Widget\Base\Contents::pluginHandle()->filter(
+        'filter',
+        array('text' => $triApiHtml),
+        null
+    );
+    return is_array($triFiltered) && isset($triFiltered['text'])
+        ? $triFiltered['text']
+        : $triApiHtml;
+});
+
 /* 主题函数（tri_opt / tri_switch / tri_excerpt_len / tri_moment_list 等） */
 require_once dirname(__DIR__) . '/functions.php';
 

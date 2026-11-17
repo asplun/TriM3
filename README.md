@@ -6,7 +6,7 @@
 
 以阅读为中心，收好文章、日常与兴趣；桌面舒展，手机也好用。
 
-[在线预览](https://abohe.cn/) · [下载 v1.2.6](https://github.com/asplun/TriM3/releases/tag/v1.2.6) · [安装说明](#安装)
+[在线预览](https://abohe.cn/) · [下载 v1.2.9](https://github.com/asplun/TriM3/releases/tag/v1.2.9) · [安装说明](#安装)
 
 [![Typecho](https://img.shields.io/badge/Typecho-1.3-2b6cb0?style=flat-square)](https://typecho.org/)
 [![Release](https://img.shields.io/github/v/release/asplun/TriM3?style=flat-square)](https://github.com/asplun/TriM3/releases)
@@ -52,10 +52,20 @@ TriM3 是一款面向个人博客和独立站的 Typecho 主题。它采用 Mate
 
 ## 版本
 
-当前版本：1.2.8。版本号同时写入主题头部、资源版本参数、主题信息和发布包名称。每次发布使用 vMAJOR.MINOR.PATCH Git tag，并在主题目录 README 的变更记录中记录兼容性、数据库影响和回滚方式。
+当前版本：1.2.9。版本号同时写入主题头部、资源版本参数、主题信息和发布包名称。每次发布使用 vMAJOR.MINOR.PATCH Git tag，并在主题目录 README 的变更记录中记录兼容性、数据库影响和回滚方式。
+
+### v1.2.9
+
+- 修复音乐页腾讯歌单播放次数始终为 0，并收窄歌单列表布局。
+- 修复图片缓存统计把 CDN 直出图片误列为待处理，以及缓存档位覆盖率判断错误。
+- 修复独立列表 API 未经过 Typecho 内容过滤器导致防盗链 URL 缺失。
+- 修复主题设置被 Typecho 主题切换删除后无法恢复；新增 `tri3_theme_settings` 备份行。
+- 修复搜索表单整页跳转导致播放器停止，恢复 Swup 无刷新导航。
+- 清理 Swup 调试角标；更新页面资源缓存版本。
+
+数据库影响：主题设置保存维护 `theme:TriM3` 和 `tri3_theme_settings` 两行；升级无需手动迁移，回滚前请保留这两行。
 
 ### v1.2.8
-
 - 修复 CDN 环境下天气定位误读内网/代理 IP 的问题，改为筛选转发链中的公网 IP。
 - 定位成功后主动清理页面缓存，避免天气城市长期停留在旧状态。
 - 按访客 IP 定位天气的页面禁止进入 CDN 公共缓存，避免缓存“定位失败”或其他访客城市。

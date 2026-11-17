@@ -94,6 +94,14 @@ class SearchController extends Controller {
       setTimeout(function () { input.focus(); }, 300);
     }
   }
+  submit(event) {
+    if (!event || !window.TriSwup || typeof window.TriSwup.navigate !== 'function') return;
+    event.preventDefault();
+    const form = event.currentTarget;
+    const params = new URLSearchParams(new FormData(form));
+    const url = form.action + (params.toString() ? '?' + params.toString() : '');
+    window.TriSwup.navigate(url);
+  }
 }
 app.register('search', SearchController);
 

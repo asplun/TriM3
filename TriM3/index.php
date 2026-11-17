@@ -6,7 +6,7 @@
  * @package TriM3
  * @author 薄荷
  * @link https://github.com/asplun/TriM3
- * @version 1.2.8
+ * @version 1.2.9
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <?php $this->need('header.php'); ?>
@@ -157,7 +157,7 @@ if ($triMetingApi === '') {
       <?php if (tri_switch('bannerSearch', '1')): ?>
       <div class="tri-search-corner" data-controller="search">
         <button class="icon-btn tri-search-entry" type="button" aria-label="搜索" data-action="click->search#toggle"><i class="ri-search-line"></i></button>
-        <form class="tri-search-expand" method="get" action="<?php $this->options->siteUrl(); ?>" role="search" data-no-swup>
+        <form class="tri-search-expand" method="get" action="<?php $this->options->siteUrl(); ?>" role="search" data-action="submit->search#submit">
           <input type="text" name="s" placeholder="搜索文章…" autocomplete="off" aria-label="搜索关键词">
         </form>
       </div>

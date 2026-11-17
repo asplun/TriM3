@@ -130,10 +130,13 @@ function tri_imgcache_scan(): array
         if ($triU === '' || strpos($triU, 'data:') === 0 || strpos($triU, 'img.php') !== false) { continue; }
         $triH = @parse_url($triU, PHP_URL_HOST);
         if ($triH === false || $triH === null || !$triAllowOk(strtolower($triH))) { continue; }
-        if (!preg_match('/\.(jpe?g|png|webp|gif|bmp)(\?|$)/i', $triU)) { continue; }
         $triOut[$triU] = true;
     }
-    return array_keys($triOut);
+    $triOut = array_keys($triOut);
+    if (function_exists('tri_imgcache_needs_proxy')) {
+        $triOut = array_values(array_filter($triOut, 'tri_imgcache_needs_proxy'));
+    }
+    return $triOut;
 }
 
 /* ---------- 预生成：一次取图，产出全部档位 ----------
@@ -276,25 +279,25 @@ case 'save_settings':
 
     case 'stats':
         $triS = tri_imgcache_stats($triCacheDir);
-        $triTotal = count(tri_imgcache_scan());
+        $triList = tri_imgcache_scan();
+        $triScanned = count($triList);
         $triStale = $triS['last'] ? (int) floor((time() - $triS['last']) / 86400) : 999;
         $triCover = 0; $triNeed = 0;
-        if (is_file(dirname(__DIR__) . '/lib/img-pipeline.php')) {
-            require_once dirname(__DIR__) . '/lib/img-pipeline.php';
-            foreach (array_slice(tri_imgcache_scan(), 0, 200) as $triOne) {
-                if (!tri_imgcache_needs_proxy($triOne)) { continue; }
-                $triNeed++;
-                foreach (tri3_img_pipeline_widths() as $triW) {
-                    /* 与生成侧保持一致：格式/质量取后台设置（此前写死 webp/70，改设置后覆盖率恒为 0） */
-                    $triFmt = (string) tri_opt('imgWebpEnable', '1') === '1' ? 'webp' : 'jpg';
-                    $triQ   = max(30, min(95, (int) tri_opt('imgDefaultQ', '80')));
-                    if (is_file(tri3_img_cache_file($triCacheDir, $triOne, $triW, false, $triFmt, $triQ))) { $triCover++; break; }
+        foreach ($triList as $triOne) {
+            $triWarm = true;
+            foreach (tri3_img_pipeline_widths() as $triW) {
+                $triFmt = (string) tri_opt('imgWebpEnable', '1') === '1' ? 'webp' : 'jpeg';
+                $triQ = max(30, min(95, (int) tri_opt('imgDefaultQ', '80')));
+                if (!is_file(tri3_img_cache_file($triCacheDir, $triOne, $triW, false, $triFmt, $triQ))) {
+                    $triWarm = false;
+                    break;
                 }
             }
+            if ($triWarm) { $triCover++; } else { $triNeed++; }
         }
         echo json_encode(['ok' => true, 'cover' => $triCover, 'need' => $triNeed, 'files' => $triS['files'], 'bytes' => $triS['bytes'],
-            'last' => $triS['last'] ? date('Y-m-d H:i', $triS['last']) : '从未生成', 'total' => $triTotal,
-            'stale' => $triStale]);
+            'last' => $triS['last'] ? date('Y-m-d H:i', $triS['last']) : '从未生成', 'total' => $triNeed,
+            'scanned' => $triScanned, 'stale' => $triStale]);
         break;
 
 case 'clear':
