@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TriM3 v1.2.5 · 主题说明</title>
+<title>TriM3 v1.2.10 · 主题说明</title>
 <style>
 :root{--p:#6750a4;--pc:#e9ddff;--bg:#f6f2fb;--s:#fff;--t:#1c1b1f;--d:#635d6e;--l:#e8e1f0}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -32,8 +32,9 @@ footer{text-align:center;color:var(--d);font-size:13px;margin-top:30px}
 <div class="wrap">
 <div class="hero">
 <h1>TriM3</h1>
-<span class="ver">v1.2.5</span>
+<span class="ver">v1.2.10</span>
 <p>Material Design 3 三栏响应式个人博客主题 · Swup 无刷新导航 · 安全加固 · 性能优化</p>
+<p><a href="https://github.com/asplun/TriM3/releases/download/v1.2.10/TriM3-1.2.10.zip" style="color:inherit;text-decoration:underline">下载 TriM3 v1.2.10 安装包</a></p>
 </div>
 
 <div class="card">
@@ -55,9 +56,12 @@ footer{text-align:center;color:var(--d);font-size:13px;margin-top:30px}
 </div>
 
 <div class="card">
-<h2>v1.2.5 更新内容</h2>
+<h2>v1.2.10 更新内容</h2>
 <ul>
-<li><b>全站版本号统一为 1.2.5</b>：<code>@version</code>、静态资源 <code>?v=</code>、后台首页版本显示、README、主题说明全部对齐</li>
+<li><b>匿名图片加载修复</b>：修复 CDN 缓存到空懒加载脚本后图片不显示，增加视口附近图片补扫。</li>
+<li><b>移动音乐页适配</b>：播放器独占手机视口，底栏、歌单滚动和播放视图返回按钮适配移动端。</li>
+<li><b>音乐与缓存修复</b>：修复腾讯歌单播放次数、图片缓存待处理统计和设置持久化问题。</li>
+<li><b>搜索导航修复</b>：搜索改为 Swup 无刷新切换，播放器跨页保持。</li>
 <li><b>安全加固</b>：图片代理去除硬编码表名并收紧开放重定向；音乐 API CORS 改为同源；CSRF 校验升级为完整 Origin 对比；相册上传增加真实图片内容校验</li>
 <li><b>性能优化</b>：数据库自检标记改为优先读取 <code>tri3DbInit</code>，减少每请求查询；清理 4 个无引用旧构建产物，发布包体积进一步下降</li>
 <li><b>友链截图修复</b>：18 张网站截图改为首屏直载，真实背景全部加载成功，不再停留在占位图</li>
@@ -93,7 +97,7 @@ footer{text-align:center;color:var(--d);font-size:13px;margin-top:30px}
 </ul>
 </div>
 
-<footer>TriM3 v1.2.5 · Material Design 3 for Typecho</footer>
+<footer>TriM3 v1.2.10 · Material Design 3 for Typecho</footer>
 </div>
 </body>
 </html>
