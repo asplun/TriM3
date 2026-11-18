@@ -314,7 +314,7 @@ window.TRI3_LOGIN = {logged: <?php echo $triGLogged ? 'true' : 'false'; ?>, name
 
 <script src="<?php $this->options->themeUrl('assets/js/tri-msg.min.js'); ?>?v=1.2.5" defer></script>
 
-<script src="<?php $this->options->themeUrl('assets/js/lazy.min.js'); ?>?v=1.2.5&fix=20261104" defer></script>
+<script src="<?php $this->options->themeUrl('assets/js/lazy.min.js'); ?>?v=1.2.5&fix=20261118" defer></script>
 
 <script src="<?php $this->options->themeUrl('assets/js/reveal.js'); ?>?v=1.2.5" defer></script>
 

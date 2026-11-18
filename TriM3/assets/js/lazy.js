@@ -483,17 +483,15 @@
     raf(function () {
       __soonTick = false;
       scan(document);
-      var p = document.querySelectorAll('img[data-src]');
-      var vh = window.innerHeight || 800, hit = false, i, r;
+      var p = document.querySelectorAll('img[data-src], img[data-srcset]');
+      var vh = window.innerHeight || 800, i, r;
       for (i = 0; i < p.length; i++) {
         r = p[i].getBoundingClientRect();
-        if (r.height > 0 && r.top < vh + 120 && r.bottom > -(vh + 120)) { hit = true; break; }
+        if (r.width > 0 && r.height > 0 && r.top < vh * 1.5 && r.bottom > -vh * 0.5) {
+          enqueueImg(p[i]);
+        }
       }
-      if (hit && __renderLeft > 0 && Date.now() - __lastRender > 900) {
-        __lastRender = Date.now();
-        __renderLeft--;
-        init(); scan(document);
-      }
+      pump();
     });
   }
   window.addEventListener('scroll', scanSoon, { passive: true });
