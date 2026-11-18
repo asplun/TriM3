@@ -544,7 +544,7 @@ $triHomeMode = $this->is('index') ? tri_opt('homeListMode', 'original') : '';
 <?php if ($triPageKey === 'bangumi'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/bangumi.min.css'); ?>?v=1.2.5"><?php endif; ?>
 
 <?php if ($triPageKey === 'links'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/links.min.css'); ?>?v=1.2.5"><?php endif; ?>
-<?php if ($triPageKey === 'music'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/page-music.min.css'); ?>?v=1.3.2"><?php endif; ?>
+<?php if ($triPageKey === 'music'): ?><link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/page-music.min.css'); ?>?v=1.3.3"><?php endif; ?>
 
 <?php endif; ?>
 
